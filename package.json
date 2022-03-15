@@ -1,0 +1,19 @@
+{
+  "name": "tokenize-property",
+  "version": "1.0.0",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "buildcss": "npx tailwindcss -i ./src/styles.css -o ./public/css/dist.css --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.0.23",
+    "truffle": "5.0.2",
+    "truffle-contract": "3.0.6"
+  }
+}
