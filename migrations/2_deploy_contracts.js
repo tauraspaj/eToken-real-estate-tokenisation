@@ -1,5 +1,5 @@
-const Test = artifacts.require("Test");
+const PropertyFactory = artifacts.require("PropertyFactory");
 
 module.exports = function(deployer) {
-  deployer.deploy(Test);
+  deployer.deploy(PropertyFactory);
 };
