@@ -10,6 +10,8 @@ contract PropertyFactory is Context, Ownable {
     using SafeMath32 for uint32;
     using SafeMath16 for uint16;
 
+    uint public propertyCount = 0;
+
     struct Property {
         string name;
         uint price;
@@ -27,6 +29,7 @@ contract PropertyFactory is Context, Ownable {
         properties.push( Property(_name, _price) );
         uint id = properties.length - 1;
         propertyToOwner[id] = _msgSender();
+        propertyCount++;
     }
 
     function createProperty(string memory _name, uint _price) public {
