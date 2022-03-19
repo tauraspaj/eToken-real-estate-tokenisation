@@ -1,8 +1,12 @@
 App = {
+    contracts: {},
     load: async () => {
         // Load app
         await App.loadWeb3();
         await App.loadAccount();
+        await App.loadContract();
+        await App.render();
+        await App.renderProperties();
     },
 
     loadWeb3: async () => {
@@ -42,6 +46,34 @@ App = {
         web3.eth.getAccounts().then(function( adr ) {
             App.account = adr[0];
         })
+    },
+
+    loadContract: async () => {
+        const propertyFactory = await $.getJSON('./../build/contracts/PropertyFactory.json');
+        App.contracts.PropertyFactory = TruffleContract(propertyFactory);
+        App.contracts.PropertyFactory.setProvider(App.web3Provider);
+        App.propertyFactory = await App.contracts.PropertyFactory.deployed();
+    },
+
+    render: async () => {
+        $('#account').html(App.account);
+    },
+
+    renderProperties: async () => {
+        var propertyCount = await App.propertyFactory.propertyCount();
+        propertyCount = propertyCount.toNumber();
+
+        for (let i = 0; i < propertyCount; i++) {
+            const property = await App.propertyFactory.properties(i);
+            const name = property.name;
+            const value = property.price.toNumber();
+
+            const owner = await App.propertyFactory.propertyToOwner(i);
+
+            $('#show-properties').append(`
+                <p>`+name+`: `+value+` and owner: `+owner+`</p>
+            `)
+        }
     }
 }
 
