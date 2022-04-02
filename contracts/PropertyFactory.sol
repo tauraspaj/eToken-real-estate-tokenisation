@@ -1,9 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+// We need to take an ERC 20 token contract
+// We need to have a contract that will store a property and erc20. 
+
 import "./Ownable.sol";
 import "./SafeMath.sol";
 import "./Context.sol";
+import "./ERC20TokenFactory.sol";
 
 contract PropertyFactory is Context, Ownable {
     using SafeMath for uint256;
@@ -15,20 +19,30 @@ contract PropertyFactory is Context, Ownable {
     struct Property {
         string name;
         uint price;
+        address tokenAddress;
     }
 
-    Property[] public properties;
+    ERC20TokenFactory tokenFactory = new ERC20TokenFactory();
 
+    Property[] public properties;
     mapping (uint => address) public propertyToOwner;
+    event PropertyCreated(
+        uint id, 
+        string name,
+        uint price,
+        address tokenAddress
+    );
 
     constructor() {
-        createProperty("New property", 156000);
+        // createProperty("Initial property", 156000);
     }
 
     function _createProperty(string memory _name, uint _price) internal {
-        properties.push( Property(_name, _price) );
+        address tokenAddress = tokenFactory.deployNewERC20Token("Name", "SMB", 10000);
+        properties.push( Property(_name, _price, tokenAddress) );
         uint id = properties.length - 1;
         propertyToOwner[id] = _msgSender();
+        emit PropertyCreated(id, _name, _price, tokenAddress);
         propertyCount++;
     }
 
