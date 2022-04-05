@@ -34,11 +34,11 @@
                 
                 <!-- Logo and nav -->
                 <div class="flex items-center justify-between ml-28 mt-10">
-                    <p class="text-gray-50 font-bold text-3xl">MyToken</p>
+                    <a class="text-gray-50 font-bold text-3xl" href="./index.php" title="Home">MyToken</a>
                     <nav class="hidden md:block space-x-8">
-                        <a href="" class="text-gray-300 transition hover:text-orange-600">Marketplace</a>
-                        <a href="" class="text-gray-300 transition hover:text-orange-600">FAQ</a>
-                        <a href="" class="text-gray-300 transition hover:text-orange-600">Contact</a>
+                        <a href="./marketplace.php" class="text-gray-300 transition hover:text-orange-600" title="Go to marketplace">Marketplace</a>
+                        <a href="./faq.php" class="text-gray-300 transition hover:text-orange-600" title="Go to FAQ page">FAQ</a>
+                        <a href="./contact.php" class="text-gray-300 transition hover:text-orange-600" title="Go to contact page">Contact</a>
                     </nav>
                     
                     <!-- Burger menu -->
@@ -83,9 +83,9 @@
                         </div>
 
                         <div class="flex flex-col items-center">
-                            <a href="#" class="text-orange-600 text-lg py-2 transition hover:text-orange-600 focus:text-orange-600" title="Marketplace">Marketplace</a>
-                            <a href="#" class="text-gray-900 text-lg py-2 transition hover:text-orange-600 focus:text-orange-600" title="FAQ">FAQ</a>
-                            <a href="#" class="text-gray-900 text-lg py-2 transition hover:text-orange-600 focus:text-orange-600" title="Contact">Contact</a>
+                            <a href="./marketplace.php" class="text-orange-600 text-lg py-2 transition hover:text-orange-600 focus:text-orange-600" title="Marketplace">Marketplace</a>
+                            <a href="./faq.php" class="text-gray-900 text-lg py-2 transition hover:text-orange-600 focus:text-orange-600" title="FAQ">FAQ</a>
+                            <a href="./contact.php" class="text-gray-900 text-lg py-2 transition hover:text-orange-600 focus:text-orange-600" title="Contact">Contact</a>
                         </div>
 
                         <!-- Faint logo -->
@@ -316,13 +316,13 @@
         </div>
 
         <div class="flex justify-center items-center space-x-1">
-            <a href="" class="text-gray-900 font-medium transition hover:text-orange-600">Home</a>
+            <a href="./index.php" class="text-orange-600 font-medium transition hover:text-orange-600" title="Home">Home</a>
             <p class="text-orange-600">/</p>
-            <a href="" class="text-gray-900 font-medium transition hover:text-orange-600">Marketplace</a>
+            <a href="./marketplace.php" class="text-gray-900 font-medium transition hover:text-orange-600" title="Go to marketplace">Marketplace</a>
             <p class="text-orange-600">/</p>
-            <a href="" class="text-gray-900 font-medium transition hover:text-orange-600">FAQ</a>
+            <a href="./faq.php" class="text-gray-900 font-medium transition hover:text-orange-600" title="Go to FAQ page">FAQ</a>
             <p class="text-orange-600">/</p>
-            <a href="" class="text-gray-900 font-medium transition hover:text-orange-600">Contact</a>
+            <a href="./contact.php" class="text-gray-900 font-medium transition hover:text-orange-600" title="Go to contact page">Contact</a>
         </div>
 
         <div class="text-center">
