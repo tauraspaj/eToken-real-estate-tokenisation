@@ -1,7 +1,11 @@
 module.exports = {
-  content: ['./public/*'],
+  content: ['./public/*', './public/js/*'],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        roboto: ['Roboto']
+      }
+    },
   },
   plugins: [],
 }
