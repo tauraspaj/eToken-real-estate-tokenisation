@@ -34,7 +34,7 @@
                 
                 <!-- Logo and nav -->
                 <div class="flex items-center justify-between ml-28 mt-10">
-                    <a class="text-gray-50 font-bold text-3xl" href="./index.php" title="Home">MyToken</a>
+                    <a class="text-gray-50 font-bold text-3xl" href="./index.php" title="Home">MyToken<span class="text-orange-600">.</span></a>
                     <nav class="hidden md:block space-x-8">
                         <a href="./marketplace.php" class="text-gray-300 transition hover:text-orange-600" title="Go to marketplace">Marketplace</a>
                         <a href="./faq.php" class="text-gray-300 transition hover:text-orange-600" title="Go to FAQ page">FAQ</a>
@@ -83,14 +83,14 @@
                         </div>
 
                         <div class="flex flex-col items-center">
-                            <a href="./marketplace.php" class="text-orange-600 text-lg py-2 transition hover:text-orange-600 focus:text-orange-600" title="Marketplace">Marketplace</a>
+                            <a href="./marketplace.php" class="text-gray-900 text-lg py-2 transition hover:text-orange-600 focus:text-orange-600" title="Marketplace">Marketplace</a>
                             <a href="./faq.php" class="text-gray-900 text-lg py-2 transition hover:text-orange-600 focus:text-orange-600" title="FAQ">FAQ</a>
                             <a href="./contact.php" class="text-gray-900 text-lg py-2 transition hover:text-orange-600 focus:text-orange-600" title="Contact">Contact</a>
                         </div>
 
                         <!-- Faint logo -->
                         <div class="flex justify-center items-center">
-                            <p class="text-gray-900 [font-size:100px] font-black -rotate-3 opacity-5">MyToken</p>
+                            <p class="text-gray-900 [font-size:100px] -mt-6 font-black -rotate-3 opacity-5">MyToken</p>
                         </div>
                     </div>
 
