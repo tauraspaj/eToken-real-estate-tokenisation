@@ -59,7 +59,7 @@
                                 Search for property
                             </p>
                         </div>
-                        <input type="text" class="outline-none bg-gray-100 text-sm md:text-bas rounded-b rounded-r border-2 px-4 text-gray-900 py-2 transition focus:border-orange-600" placeholder="Enter property location...">
+                        <input type="text" class="outline-none bg-gray-100 text-sm md:text-base rounded-b rounded-r border-2 px-4 text-gray-900 py-2 transition focus:border-orange-600" placeholder="Enter property location...">
     
                     </div>
                 </div>
