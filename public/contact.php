@@ -28,7 +28,7 @@ include_once './header.php';
 </section>
 
 <!-- Contact form -->
-<section class="bg-gray-100 border-t py-12 md:py-16">
+<section class="bg-gray-100 border-t py-12 md:py-16 px-4">
     <div class="container mx-auto">
         <h1 class="text-2xl text-gray-800 font-bold">Contact form</h1>
         <div class="title-underline"></div>
