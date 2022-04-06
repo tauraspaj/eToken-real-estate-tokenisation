@@ -17,7 +17,7 @@
     <!-- TITLE -->
     <title>MyToken <?php echo '- '.strtoupper($activePage) ?></title>
     <!-- FAV ICON -->
-    <link rel="shortcut icon" href="./images/favicon.ico">
+    <!-- <link rel="shortcut icon" href="./images/favicon.ico"> -->
     <!-- CSS -->
     <link href="./css/dist.css" rel="stylesheet">
     <!-- Fontawesome icons -->
@@ -34,7 +34,7 @@
                 <a href="./marketplace.php" class="<?php echo ($activePage == 'marketplace') ? 'text-orange-600' : 'text-gray-900' ?> transition hover:text-orange-600" title="Go to marketplace">Marketplace</a>
                 <a href="./faq.php" class="<?php echo ($activePage == 'faq') ? 'text-orange-600' : 'text-gray-900' ?> transition hover:text-orange-600" title="Go to FAQ page">FAQ</a>
                 <a href="./contact.php" class="<?php echo ($activePage == 'contact') ? 'text-orange-600' : 'text-gray-900' ?> transition hover:text-orange-600" title="Go to contact page">Contact</a>
-                <button class="border text-gray-900 rounded px-4 py-1 transition hover:text-orange-600 hover:border-orange-600" title="Sign in with MetaMask">Sign in</button>
+                <button id="account-display" type="button" class="border text-gray-900 rounded px-4 py-1 transition hover:text-orange-600 hover:border-orange-600">Sign in</button>
             </nav>
 
             <!-- Burger menu -->
@@ -64,11 +64,11 @@
                             <a href="./marketplace.php" class="<?php echo ($activePage == 'marketplace') ? 'text-orange-600' : 'text-gray-900' ?> text-lg py-2 transition hover:text-orange-600 focus:text-orange-600" title="Marketplace">Marketplace</a>
                             <a href="./faq.php" class="<?php echo ($activePage == 'faq') ? 'text-orange-600' : 'text-gray-900' ?> text-lg py-2 transition hover:text-orange-600 focus:text-orange-600" title="FAQ">FAQ</a>
                             <a href="./contact.php" class="<?php echo ($activePage == 'contact') ? 'text-orange-600' : 'text-gray-900' ?> text-lg py-2 transition hover:text-orange-600 focus:text-orange-600" title="Contact">Contact</a>
-                            <button class="border text-gray-900 rounded px-4 py-1 transition hover:text-orange-600 hover:border-orange-600 mt-2" title="Sign in with MetaMask">Sign in</button>
+                            <button id="mob-account-display" type="button" class="border text-gray-900 rounded px-4 py-1 transition hover:text-orange-600 hover:border-orange-600 mt-2">Sign in</button>
                         </div>
 
                         <!-- Faint logo -->
-                        <div class="flex justify-center items-center">
+                        <div class="flex justify-center items-center pointer-events-none">
                             <p class="text-gray-900 [font-size:100px] -mt-6 font-black -rotate-3 opacity-5">MyToken</p>
                         </div>
                     </div>
