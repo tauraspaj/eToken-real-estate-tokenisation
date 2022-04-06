@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// We need to take an ERC 20 token contract
-// We need to have a contract that will store a property and erc20. 
-
 import "./Ownable.sol";
 import "./SafeMath.sol";
 import "./Context.sol";
@@ -17,8 +14,13 @@ contract PropertyFactory is Context, Ownable {
     uint public propertyCount = 0;
 
     struct Property {
-        string name;
+        string propertyAddress;
+        string postcode;
+        uint16 nBedrooms;
+        uint16 nShowers;
+        string[] images;
         uint price;
+        uint monthlyRent;
         address tokenAddress;
     }
 
@@ -28,25 +30,29 @@ contract PropertyFactory is Context, Ownable {
     mapping (uint => address) public propertyToOwner;
     event PropertyCreated(
         uint id, 
-        string name,
-        uint price,
         address tokenAddress
     );
 
     constructor() {
-        // createProperty("Initial property", 156000);
     }
 
-    function _createProperty(string memory _name, uint _price) internal {
-        address tokenAddress = tokenFactory.deployNewERC20Token("Name", "SMB", 10000);
-        properties.push( Property(_name, _price, tokenAddress) );
+    function _createProperty(string memory _propertyAddress, string memory _postcode, uint16 _nBedrooms, uint16 _nShowers, string[] memory _images, uint _price, uint _monthlyRent, uint _nTokens, string memory _tokenSymbol) internal {
+        // Generate ERC20 token on this property
+        address tokenAddress = tokenFactory.deployNewERC20Token(_propertyAddress, _tokenSymbol, _nTokens);
+
+        // Push property into the array
+        properties.push( Property(_propertyAddress, _postcode, _nBedrooms, _nShowers, _images, _price, _monthlyRent, tokenAddress) );
         uint id = properties.length - 1;
+
+        // Assign property ownerhip
         propertyToOwner[id] = _msgSender();
-        emit PropertyCreated(id, _name, _price, tokenAddress);
+
+        // Emit event
+        emit PropertyCreated(id, tokenAddress);
         propertyCount++;
     }
 
-    function createProperty(string memory _name, uint _price) public {
-        _createProperty(_name, _price);
+    function createProperty(string memory _propertyAddress, string memory _postcode, uint16 _nBedrooms, uint16 _nShowers, string[] memory _images, uint _price, uint _monthlyRent, uint _nTokens, string memory _tokenSymbol) public {
+        _createProperty(_propertyAddress, _postcode, _nBedrooms, _nShowers, _images, _price, _monthlyRent, _nTokens, _tokenSymbol);
     }
 }
