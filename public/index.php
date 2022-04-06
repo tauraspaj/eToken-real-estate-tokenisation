@@ -28,12 +28,12 @@
     <header>
         <div class="h-[520px] md:h-[600px] w-screen bg-[#03070F] overflow-hidden grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5">
             <div class="relative md:col-span-2 lg:col-span-3 pr-8">
-                <div class="absolute top-20 w-full h-[1px] bg-white opacity-25 z-[5]"></div>
-                <div class="absolute left-20 w-[1px] h-full bg-white opacity-25 z-[5]"></div>
+                <div class="absolute top-16 md:top-20 w-full h-[1px] bg-white opacity-25 z-[5]"></div>
+                <div class="absolute left-16 md:left-20 w-[1px] h-full bg-white opacity-25 z-[5]"></div>
                 <!-- <div class="absolute top-8 left-16 w-60 h-60 bg-[#353A43] rounded-full filter blur-3xl z-[5]"></div> -->
                 
                 <!-- Logo and nav -->
-                <div class="flex items-center justify-between ml-28 mt-10">
+                <div class="flex items-center justify-between ml-20 mt-4 md:ml-28 md:mt-10">
                     <a class="text-gray-50 font-bold text-3xl" href="./index.php" title="Home">MyToken<span class="text-orange-600">.</span></a>
                     <nav class="hidden md:block space-x-8">
                         <a href="./marketplace.php" class="text-gray-300 transition hover:text-orange-600" title="Go to marketplace">Marketplace</a>
@@ -48,7 +48,7 @@
                 </div>
 
                 <!-- Welcome text and search-->
-                <div class="ml-28 mt-20 max-w-2xl">
+                <div class="ml-20 md:ml-28 mt-20 max-w-2xl">
                     <p class="text-white text-2xl md:text-6xl font-bold">A new way to buy and sell property<span class="text-orange-600">.</span></p>
                     <p class="text-white md:text-3xl font-light mt-4">Welcome to the new age.</p>
 
