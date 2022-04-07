@@ -109,15 +109,14 @@ App = {
 
             const nBedrooms = property.nBedrooms.toNumber();
             const nShowers = property.nShowers.toNumber();
-            const livingArea = property.livingArea.toNumber();
    
             const owner = await App.propertyFactory.propertyToOwner(i);
 
             $('#marketplace').prepend(`
                 <a href="./property.php?id=`+i+`" class="bg-white rounded-3xl group h-96 border shadow flex flex-col overflow-hidden cursor-pointer" href="" title="">
                     <!-- Image -->
-                    <div class="w-full h-3/5 overflow-hidden">
-                        <div class="w-full h-full bg-cover bg-center rounded-t-3xl border-b transition group-hover:scale-110" style="background-image: url('`+images[0]+`')">
+                    <div class="w-full h-3/5 overflow-hidden rounded-t-3xl">
+                        <div class="w-full h-full bg-cover bg-center border-b transition group-hover:scale-110" style="background-image: url('`+images[0]+`')">
                         </div>
                     </div>
                     <!-- Info -->
@@ -146,10 +145,10 @@ App = {
                             </div>
                             <div class="flex flex-col border-r justify-center items-center p-2">
                                 <div class="flex space-x-2 items-center">
-                                    <i class="fa-regular fa-folder text-sm text-orange-600"></i>
-                                    <p class="font-semibold text-gray-900">`+livingArea+`m<sup>2</sup></p>
+                                    <i class="fa-brands fa-bitcoin text-orange-600"></i>
+                                    <p class="font-semibold text-gray-900">$`+monthlyRent+`</p>
                                 </div>
-                                <p class="text-gray-500 text-sm">Living area</p>
+                                <p class="text-gray-500 text-sm">Monthly rent</p>
                             </div>
                         </div>
                     </div>
@@ -158,8 +157,8 @@ App = {
         }
     },
 
-    createProperty: async (_propertyAddress, _postcode, _nBedrooms, _nShowers, _livingArea, _images, _price, _monthlyRent, _nTokens, _tokenSymbol) => {
-        await App.propertyFactory.createProperty(_propertyAddress, _postcode, _nBedrooms, _nShowers, _livingArea, _images, _price, _monthlyRent, _nTokens, _tokenSymbol, {from: App.account});
+    createProperty: async (_propertyAddress, _postcode, _nBedrooms, _nShowers, _images, _price, _monthlyRent, _nTokens, _tokenSymbol) => {
+        await App.propertyFactory.createProperty(_propertyAddress, _postcode, _nBedrooms, _nShowers, _images, _price, _monthlyRent, _nTokens, _tokenSymbol, {from: App.account});
         window.location.reload();
     },
 
@@ -185,14 +184,13 @@ $(() => {
         const _postcode = $('[name="_postcode"]').val();
         const _nBedrooms = $('[name="_nBedrooms"]').val();
         const _nShowers = $('[name="_nShowers"]').val();
-        const _livingArea = $('[name="_livingArea"]').val();
         const _image1 = $('[name="_image1"]').val();
         const _image2 = $('[name="_image2"]').val();
         const _image3 = $('[name="_image3"]').val();
         const _image4 = $('[name="_image4"]').val();
         var _images = [_image1, _image2, _image3, _image4];
         
-        App.createProperty(_propertyAddress, _postcode, _nBedrooms, _nShowers, _livingArea, _images, _price, _monthlyRent, _nTokens, _tokenSymbol)
+        App.createProperty(_propertyAddress, _postcode, _nBedrooms, _nShowers, _images, _price, _monthlyRent, _nTokens, _tokenSymbol)
     })
 
 })
