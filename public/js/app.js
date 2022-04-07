@@ -7,6 +7,7 @@ App = {
         await App.loadContracts();
         await App.render();
         await App.renderMarketplace();
+        await App.renderProfile();
     },
 
     loadWeb3: async () => {
@@ -87,12 +88,9 @@ App = {
         var propertyCount = await App.propertyFactory.propertyCount();
         propertyCount = propertyCount.toNumber();
 
-        // const contract = await Test.at(address);
-
         // Loop through each property and display it
         for (let i = 0; i < propertyCount; i++) {
             const property = await App.propertyFactory.properties(i);
-            console.log(property);
 
             const images = await App.propertyFactory.getImages(i);
 
@@ -161,6 +159,62 @@ App = {
         await App.propertyFactory.createProperty(_propertyAddress, _postcode, _nBedrooms, _nShowers, _images, _price, _monthlyRent, _nTokens, _tokenSymbol, {from: App.account});
         window.location.reload();
     },
+
+    renderProfile: async () => {
+        // Find number of total properties
+        var propertyCount = await App.propertyFactory.propertyCount();
+        propertyCount = propertyCount.toNumber();
+        
+        // Loop through each property and find if the user is owner. Check if it owns any tokens of that property
+        for (let i = 0; i < propertyCount; i++) {
+            let thisOwner = await App.propertyFactory.propertyToOwner(i);
+            const property = await App.propertyFactory.properties(i);
+
+            const monthlyRent = property.monthlyRent.toNumber();
+            const propertyAddress = property.propertyAddress;
+            const value = property.price.toNumber();
+
+            // Get total supply of a token
+            const token = await App.contracts.ERC20.at(property.tokenAddress);
+            let totalSupply = await token.totalSupply();
+            totalSupply = totalSupply.toNumber();
+            // Find profit per token and round it to 2 d.p.
+            const profitPerToken = Math.round((monthlyRent/totalSupply)*100)/100;
+
+            const nBedrooms = property.nBedrooms.toNumber();
+            const nShowers = property.nShowers.toNumber();
+
+            // Add to table if the user is owner
+            if (thisOwner.toUpperCase() == App.account.toUpperCase()) {
+                $('#owned-properties').append(`
+                    <tr class="border-t">
+                        <td class="py-2 text-center whitespace-nowrap px-2">`+propertyAddress+`</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">`+monthlyRent+`</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">`+totalSupply+`</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">$`+value+`</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">View</td>
+                    </tr>
+                `)
+            }
+
+            let balance = await token.balanceOf(App.account)
+            balance = balance.toNumber();
+            
+            if (balance > 0) {
+                $('#owned-tokens').append(`
+                    <tr class="border-t">
+                        <td class="py-2 text-center whitespace-nowrap px-2">`+propertyAddress+`</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">$`+monthlyRent+`</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">`+balance+`</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">$999</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">$`+profitPerToken*balance+`</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">View</td>
+                    </tr>
+                `)
+            }
+        }
+        
+    }
 
 }
 
