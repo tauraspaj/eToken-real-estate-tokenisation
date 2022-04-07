@@ -6,7 +6,7 @@ App = {
         await App.loadAccount();
         await App.loadContracts();
         await App.render();
-        await App.renderProperties();
+        await App.renderMarketplace();
     },
 
     loadWeb3: async () => {
@@ -68,6 +68,10 @@ App = {
         App.contracts.PropertyFactory.setProvider(App.web3Provider);
         App.propertyFactory = await App.contracts.PropertyFactory.deployed();
 
+        const erc20 = await $.getJSON('./../build/contracts/ERC20.json');
+        App.contracts.ERC20 = TruffleContract(erc20);
+        App.contracts.ERC20.setProvider(App.web3Provider);
+
         // const erc20TokenFactory = await $.getJSON('./../build/contracts/ERC20TokenFactory.json');
         // App.contracts.ERC20TokenFactory = TruffleContract(erc20TokenFactory);
         // App.contracts.ERC20TokenFactory.setProvider(App.web3Provider);
@@ -78,31 +82,82 @@ App = {
         $('#account').html(App.account);
     },
 
-    renderProperties: async () => {
+    renderMarketplace: async () => {
+        // Find number of total properties
         var propertyCount = await App.propertyFactory.propertyCount();
         propertyCount = propertyCount.toNumber();
 
+        // const contract = await Test.at(address);
+
+        // Loop through each property and display it
         for (let i = 0; i < propertyCount; i++) {
             const property = await App.propertyFactory.properties(i);
             console.log(property);
-            const name = property.name;
-            const value = property.price.toNumber();
-            const tokenAddress = property.tokenAddress;
 
+            const images = await App.propertyFactory.getImages(i);
+
+            const monthlyRent = property.monthlyRent.toNumber();
+            const propertyAddress = property.propertyAddress;
+            const value = property.price.toNumber();
+
+            // Get total supply of a token
+            const token = await App.contracts.ERC20.at(property.tokenAddress);
+            let totalSupply = await token.totalSupply();
+            totalSupply = totalSupply.toNumber();
+            // Find profit per token and round it to 2 d.p.
+            const profitPerToken = Math.round((monthlyRent/totalSupply)*100)/100;
+
+            const nBedrooms = property.nBedrooms.toNumber();
+            const nShowers = property.nShowers.toNumber();
+            const livingArea = property.livingArea.toNumber();
+   
             const owner = await App.propertyFactory.propertyToOwner(i);
 
-            $('#show-properties').append(`
-                <div class="bg-red-50">
-                    <p class="font-bold">Property Name: <span class="font-normal">`+name+`</span>, Value: <span class="font-normal">`+value+`</span></p>
-                    <p class="font-bold">Owner: <span class="font-normal">`+owner+`</span></p>
-                    <p class="font-bold">Token: <span class="font-normal">`+tokenAddress+`</span></p>
-                </div>
+            $('#marketplace').prepend(`
+                <a class="bg-white rounded-3xl group h-96 border shadow flex flex-col overflow-hidden" href="" title="">
+                    <!-- Image -->
+                    <div class="w-full h-3/5 bg-cover bg-center rounded-t-3xl border-b transition group-hover:scale-110" style="background-image: url('`+images[0]+`')">
+                    </div>
+                    <!-- Info -->
+                    <div>
+                        <div class="p-4 border-b">
+                            <p class="text-gray-900 font-bold text-xl whitespace-nowrap">Rent per token: $`+profitPerToken+`</p>
+                            <p class="text-gray-400 text-sm whitespace-nowrap truncate mb-4">`+propertyAddress+`</p>
+                            <div class="rounded bg-green-500 text-white inline-block text-sm px-2 py-1 ">Value: <span class="font-medium">$`+value+`</span></div>
+                            <div class="rounded bg-green-500 text-white inline-block text-sm px-2 py-1 ">Tokens left: <span class="font-medium">250000</span></div>
+                        </div>
+                        <!-- Room information -->
+                        <div class="grid grid-cols-3">
+                            <div class="flex flex-col border-r justify-center items-center p-2">
+                                <div class="flex space-x-2 items-center">
+                                    <i class="fa-solid fa-bed text-sm text-orange-600"></i>
+                                    <p class="font-semibold text-gray-900">`+nBedrooms+`</p>
+                                </div>
+                                <p class="text-gray-500 text-sm">Bedrooms</p>
+                            </div>
+                            <div class="flex flex-col border-r justify-center items-center p-2">
+                                <div class="flex space-x-2 items-center">
+                                    <i class="fa-solid fa-bath text-sm text-orange-600"></i>
+                                    <p class="font-semibold text-gray-900">`+nShowers+`</p>
+                                </div>
+                                <p class="text-gray-500 text-sm">Bathrooms</p>
+                            </div>
+                            <div class="flex flex-col border-r justify-center items-center p-2">
+                                <div class="flex space-x-2 items-center">
+                                    <i class="fa-regular fa-folder text-sm text-orange-600"></i>
+                                    <p class="font-semibold text-gray-900">`+livingArea+`m<sup>2</sup></p>
+                                </div>
+                                <p class="text-gray-500 text-sm">Living area</p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
             `)
         }
     },
 
-    createProperty: async (_propertyAddress, _postcode, _nBedrooms, _nShowers, _images, _price, _monthlyRent, _nTokens, _tokenSymbol) => {
-        await App.propertyFactory.createProperty(_propertyAddress, _postcode, _nBedrooms, _nShowers, _images, _price, _monthlyRent, _nTokens, _tokenSymbol, {from: App.account});
+    createProperty: async (_propertyAddress, _postcode, _nBedrooms, _nShowers, _livingArea, _images, _price, _monthlyRent, _nTokens, _tokenSymbol) => {
+        await App.propertyFactory.createProperty(_propertyAddress, _postcode, _nBedrooms, _nShowers, _livingArea, _images, _price, _monthlyRent, _nTokens, _tokenSymbol, {from: App.account});
         window.location.reload();
     },
 
@@ -128,13 +183,14 @@ $(() => {
         const _postcode = $('[name="_postcode"]').val();
         const _nBedrooms = $('[name="_nBedrooms"]').val();
         const _nShowers = $('[name="_nShowers"]').val();
+        const _livingArea = $('[name="_livingArea"]').val();
         const _image1 = $('[name="_image1"]').val();
         const _image2 = $('[name="_image2"]').val();
         const _image3 = $('[name="_image3"]').val();
         const _image4 = $('[name="_image4"]').val();
         var _images = [_image1, _image2, _image3, _image4];
         
-        App.createProperty(_propertyAddress, _postcode, _nBedrooms, _nShowers, _images, _price, _monthlyRent, _nTokens, _tokenSymbol)
+        App.createProperty(_propertyAddress, _postcode, _nBedrooms, _nShowers, _livingArea, _images, _price, _monthlyRent, _nTokens, _tokenSymbol)
     })
 
 })
