@@ -114,9 +114,11 @@ App = {
             const owner = await App.propertyFactory.propertyToOwner(i);
 
             $('#marketplace').prepend(`
-                <a class="bg-white rounded-3xl group h-96 border shadow flex flex-col overflow-hidden" href="" title="">
+                <a href="./property.php?id=`+i+`" class="bg-white rounded-3xl group h-96 border shadow flex flex-col overflow-hidden cursor-pointer" href="" title="">
                     <!-- Image -->
-                    <div class="w-full h-3/5 bg-cover bg-center rounded-t-3xl border-b transition group-hover:scale-110" style="background-image: url('`+images[0]+`')">
+                    <div class="w-full h-3/5 overflow-hidden">
+                        <div class="w-full h-full bg-cover bg-center rounded-t-3xl border-b transition group-hover:scale-110" style="background-image: url('`+images[0]+`')">
+                        </div>
                     </div>
                     <!-- Info -->
                     <div>
