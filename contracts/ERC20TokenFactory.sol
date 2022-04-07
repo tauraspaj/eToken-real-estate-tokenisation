@@ -12,13 +12,14 @@ contract ERC20TokenFactory is Context{
     function deployNewERC20Token(
         string calldata name,
         string calldata symbol,
-        uint256 initialSupply
+        uint256 initialSupply,
+        address owner
     ) public returns (address) {
         ERC20 t = new ERC20(
             name,
             symbol,
             initialSupply,
-            msg.sender
+            owner
         );
         emit ERC20TokenCreated(address(t));
 
