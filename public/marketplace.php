@@ -64,11 +64,6 @@ include_once './header.php';
                     <input type="text" name="_nShowers" required spellcheck="false" class="border rounded w-full focus:outline-none transition focus:ring-1 focus:ring-orange-600 px-2 py-2 text-sm font-medium" placeholder="Enter number of showers">
                 </div>
 
-                <div class="col-span-2">
-                    <p class="text-xs uppercase font-semibold text-gray-500 px-2 py-1">Living area<span class="text-red-500">*</span></p>
-                    <input type="text" name="_livingArea" required spellcheck="false" class="border rounded w-full focus:outline-none transition focus:ring-1 focus:ring-orange-600 px-2 py-2 text-sm font-medium" placeholder="Enter size of living area">
-                </div>
-
                 <div class="">
                     <p class="text-xs uppercase font-semibold text-gray-500 px-2 py-1">Image 1<span class="text-red-500">*</span></p>
                     <input type="text" name="_image1" required spellcheck="false" class="border rounded w-full focus:outline-none transition focus:ring-1 focus:ring-orange-600 px-2 py-2 text-sm font-medium" placeholder="Enter URL of Image 1">
