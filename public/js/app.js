@@ -91,6 +91,7 @@ App = {
         // Loop through each property and display it
         for (let i = 0; i < propertyCount; i++) {
             const property = await App.propertyFactory.properties(i);
+            console.log(property);
 
             const images = await App.propertyFactory.getImages(i);
 
@@ -100,6 +101,7 @@ App = {
 
             // Get total supply of a token
             const token = await App.contracts.ERC20.at(property.tokenAddress);
+            console.log(property.tokenAddress);
             let totalSupply = await token.totalSupply();
             totalSupply = totalSupply.toNumber();
             // Find profit per token and round it to 2 d.p.
@@ -214,6 +216,10 @@ App = {
             }
         }
         
+    },
+
+    renderProperty: async () => {
+
     }
 
 }
@@ -247,4 +253,34 @@ $(() => {
         App.createProperty(_propertyAddress, _postcode, _nBedrooms, _nShowers, _images, _price, _monthlyRent, _nTokens, _tokenSymbol)
     })
 
+    // Check if the page loaded is a property page
+    const url = window.location.href.split("/").pop();
+    if (url.includes("property.php?id=")) {
+        const propertyId = url.split("=").pop();
+        App.renderProperty(propertyId);
+    }
+
+    $('#showBuy').on('click', () => {
+        if ($('#buyTokensWindow').attr('data-display') != true) {
+            $('#buyTokensWindow').removeClass('hidden')
+            $('#sellTokensWindow').addClass('hidden')
+            $('#buyTokensWindow').attr('display', true)
+            $('#showBuy').removeClass('text-gray-500')
+            $('#showBuy').addClass('text-orange-600')
+            $('#showSell').removeClass('text-orange-600')
+            $('#showSell').addClass('text-gray-500')
+        }
+    })
+
+    $('#showSell').on('click', () => {
+        if ($('#sellTokensWindow').attr('data-display') != true) {
+            $('#sellTokensWindow').removeClass('hidden')
+            $('#buyTokensWindow').addClass('hidden')
+            $('#sellTokensWindow').attr('display', true)
+            $('#showSell').removeClass('text-gray-500')
+            $('#showSell').addClass('text-orange-600')
+            $('#showBuy').removeClass('text-orange-600')
+            $('#showBuy').addClass('text-gray-500')
+        }
+    })
 })
