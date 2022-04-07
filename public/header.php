@@ -34,7 +34,7 @@
                 <a href="./marketplace.php" class="<?php echo ($activePage == 'marketplace') ? 'text-orange-600' : 'text-gray-900' ?> transition hover:text-orange-600" title="Go to marketplace">Marketplace</a>
                 <a href="./faq.php" class="<?php echo ($activePage == 'faq') ? 'text-orange-600' : 'text-gray-900' ?> transition hover:text-orange-600" title="Go to FAQ page">FAQ</a>
                 <a href="./contact.php" class="<?php echo ($activePage == 'contact') ? 'text-orange-600' : 'text-gray-900' ?> transition hover:text-orange-600" title="Go to contact page">Contact</a>
-                <button id="account-display" type="button" class="border text-gray-900 rounded px-4 py-1 transition hover:text-orange-600 hover:border-orange-600">Sign in</button>
+                <a href="./profile.php" id="account-display" type="button" class="border <?php echo ($activePage == 'profile') ? 'text-orange-600 border-orange-600' : 'text-gray-900' ?> rounded px-4 py-1 transition hover:text-orange-600 hover:border-orange-600">Sign in</a>
             </nav>
 
             <!-- Burger menu -->
