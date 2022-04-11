@@ -5,9 +5,6 @@ App = {
         await App.loadWeb3();
         await App.loadAccount();
         await App.loadContracts();
-        await App.render();
-        await App.renderMarketplace();
-        await App.renderProfile();
     },
 
     loadWeb3: async () => {
@@ -79,10 +76,6 @@ App = {
         // App.erc20TokenFactory = await App.contracts.ERC20TokenFactory.deployed();
     },
 
-    render: async () => {
-        $('#account').html(App.account);
-    },
-
     renderMarketplace: async () => {
         // Find number of total properties
         var propertyCount = await App.propertyFactory.propertyCount();
@@ -91,7 +84,7 @@ App = {
         // Loop through each property and display it
         for (let i = 0; i < propertyCount; i++) {
             const property = await App.propertyFactory.properties(i);
-            console.log(property);
+            // console.log(property);
 
             const images = await App.propertyFactory.getImages(i);
 
@@ -101,7 +94,7 @@ App = {
 
             // Get total supply of a token
             const token = await App.contracts.ERC20.at(property.tokenAddress);
-            console.log(property.tokenAddress);
+            // console.log(property.tokenAddress);
             let totalSupply = await token.totalSupply();
             totalSupply = totalSupply.toNumber();
             // Find profit per token and round it to 2 d.p.
@@ -218,15 +211,102 @@ App = {
         
     },
 
-    renderProperty: async () => {
+    renderProperty: async (propertyId) => {
+        const property = await App.propertyFactory.properties(propertyId);
 
+        const images = await App.propertyFactory.getImages(propertyId);
+
+        const monthlyRent = property.monthlyRent.toNumber();
+        const propertyAddress = property.propertyAddress;
+        const value = property.price.toNumber();
+
+        // Get total supply of a token
+        const token = await App.contracts.ERC20.at(property.tokenAddress);
+        // console.log(property.tokenAddress);
+        let totalSupply = await token.totalSupply();
+        totalSupply = totalSupply.toNumber();
+        // Find profit per token and round it to 2 d.p.
+        const profitPerToken = Math.round((monthlyRent/totalSupply)*100)/100;
+
+        const singleTokenPrice = Math.round((value/totalSupply)*100)/100;
+
+        const nBedrooms = property.nBedrooms.toNumber();
+        const nShowers = property.nShowers.toNumber();
+
+        $('#singlePropertyDisplay').html(`
+            <div>
+                <!-- Image -->
+                <div class="w-full h-96 bg-cover bg-center shadow rounded-lg" style="background-image: url('`+images[0]+`')">
+                </div>
+                <div class="flex flex-col lg:flex-row shadow -mt-16 mx-6">
+                    <div class="bg-orange-700 p-8 rounded-l">
+                        <p class="text-4xl font-bold text-gray-50">$1,620,000</p>
+                        <p class="text-sm text-gray-300">32 Madeup Road</p>
+                        <p class="text-sm text-gray-300">GU2 8EN</p>
+                    </div>
+                    <div class="flex-auto flex flex-row lg:flex-col bg-gray-900 bg-opacity-95 rounded-r">
+                        <!-- Top row -->
+                        <div class="flex-1 flex flex-col lg:flex-row">
+                            <div class="flex-1 flex justify-center items-center flex-col space-y-1 border-b border-r border-gray-700 p-2">
+                                <i class="fa-solid fa-bed text-sm text-center text-gray-50"></i>
+                                <p class="text-gray-50 uppercase text-sm text-center">`+nBedrooms+` Bedrooms</p>
+                            </div>
+                            <div class="flex-1 flex justify-center items-center flex-col space-y-1 border-b border-r border-gray-700 p-2">
+                                <i class="fa-solid fa-bath text-sm text-center text-gray-50"></i>
+                                <p class="text-gray-50 uppercase text-sm text-center">`+nBedrooms+` Bathrooms</p>
+                            </div>
+                            <div class="flex-1 flex justify-center items-center flex-col space-y-1 border-b border-r lg:border-r-0 border-gray-700 p-2">
+                                <i class="fa-solid fa-dollar-sign text-sm text-center text-gray-50"></i>
+                                <p class="text-gray-50 uppercase text-sm text-center">$`+monthlyRent+` Rent</p>
+                            </div>
+                        </div>
+                        <!-- Bottom Row -->
+                        <div class="flex-1 flex flex-col lg:flex-row">
+                            <div class="flex-1 flex justify-center items-center flex-col space-y-1 border-b lg:border-b-0 border-gray-700 lg:border-r p-2">
+                                <p class="text-gray-50 uppercase text-sm text-center">25000</p>
+                                <p class="text-gray-50 uppercase text-sm text-center">Tokens Left</p>
+                            </div>
+                            <div class="flex-1 flex justify-center items-center flex-col space-y-1 border-b lg:border-b-0 border-gray-700 lg:border-r p-2">
+                                <p class="text-gray-50 uppercase text-sm text-center">$`+singleTokenPrice+`</p>
+                                <p class="text-gray-50 uppercase text-sm text-center">Single Token Price</p>
+                            </div>
+                            <div class="flex-1 flex justify-center items-center flex-col space-y-1 p-2">
+                                <p class="text-gray-50 uppercase text-sm text-center">$`+profitPerToken+`</p>
+                                <p class="text-gray-50 uppercase text-sm text-center">Rent Per Token</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        `)
     }
 
 }
 
 $(() => {
     // Load functions
-    $(window).on('load', () => App.load() )
+    $(window).on('load', async () => {
+        await App.load()
+        // Check if the page loaded is a property page
+        const url = window.location.href.split("/").pop();
+
+        // Render marketplace
+        if (url.includes("marketplace.php")) {
+            App.renderMarketplace();
+        }
+
+        // Render profile
+        if (url.includes("profile.php")) {
+            App.renderProfile();
+        }
+
+        // Load single property page
+        if (url.includes("property.php?id=")) {
+            const propertyId = url.split("=").pop();
+            App.renderProperty(propertyId);
+        }
+    })
     // Mobile menu
     $('#burger-menu, #mobile-curtain, #close-mobile-overlay').on('click', () => $('#mobile-overlay').slideToggle())
     // Display wallet address
@@ -253,12 +333,7 @@ $(() => {
         App.createProperty(_propertyAddress, _postcode, _nBedrooms, _nShowers, _images, _price, _monthlyRent, _nTokens, _tokenSymbol)
     })
 
-    // Check if the page loaded is a property page
-    const url = window.location.href.split("/").pop();
-    if (url.includes("property.php?id=")) {
-        const propertyId = url.split("=").pop();
-        App.renderProperty(propertyId);
-    }
+    
 
     $('#showBuy').on('click', () => {
         if ($('#buyTokensWindow').attr('data-display') != true) {

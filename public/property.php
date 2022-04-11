@@ -3,8 +3,10 @@ $activePage = 'property';
 include_once './header.php';
 ?>
 
-<section class="container mx-auto px-4 py-16 grid grid-cols-1 md:grid-cols-2">
-    <div>Property</div>
+<section class="container mx-auto px-4 py-16 grid grid-cols-1 md:grid-cols-2 gap-16">
+    <div id="singlePropertyDisplay" class="flex flex-col space-y-4">
+        <!-- Filled via js -->
+    </div>
     
     <div id="exchange" class="flex flex-col">
         <div>
