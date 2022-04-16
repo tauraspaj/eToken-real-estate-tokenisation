@@ -16,11 +16,11 @@ include_once './header.php';
         <div id="buyTokensWindow" data-display="true" class="border rounded-b rounded-r p-4 flex flex-col">
             <div class="flex items-center justify-between">
                 <p class="text-xs uppercase font-semibold text-gray-500 px-2 py-1">Input</p>
-                <p class="text-xs uppercase  text-gray-500 px-2 py-1">Balance: <span class="font-semibold">98.125152</span></p>
+                <p class="text-xs uppercase text-gray-500 px-2 py-1">Balance: <span id="ethBalance" class="font-semibold"></span></p>
             </div>
 
             <div class="flex items-center">
-                <input type="text" class="flex-auto border rounded-l w-full focus:outline-none transition focus:ring-1 focus:ring-orange-600 px-2 py-2 text-sm font-medium">
+                <input type="text" id="buyInput" class="flex-auto border rounded-l w-full focus:outline-none transition focus:border-orange-600 px-2 py-2 text-sm font-medium">
                 <p class="px-4 rounded-r font-semibold text-gray-900 bg-gray-100 border border-l-0 h-full flex items-center">ETH</p>
             </div>
 
@@ -30,13 +30,13 @@ include_once './header.php';
             </div>
 
             <div class="flex items-center">
-                <input type="text" disabled class="flex-auto border rounded-l w-full focus:outline-none transition focus:ring-1 focus:ring-orange-600 px-2 py-2 text-sm font-medium">
-                <p class="px-4 rounded-r font-semibold text-gray-900 bg-gray-100 border border-l-0 h-full flex items-center">TKN</p>
+                <input type="text" id="buyOutput" disabled class="flex-auto border rounded-l w-full focus:outline-none transition focus:ring-1 focus:ring-orange-600 px-2 py-2 text-sm font-medium">
+                <p id="tokenSymbol" class="px-4 rounded-r font-semibold text-gray-900 bg-gray-100 border border-l-0 h-full flex items-center"></p>
             </div>
 
             <div class="flex items-center justify-between">
                 <p class="text-xs uppercase text-gray-500 px-2 py-1">Exchange rate</p>
-                <p class="text-xs uppercase text-gray-500 px-2 py-1"><span class="font-semibold">1.25 ETH</span> per token</p>
+                <p class="text-xs uppercase text-gray-500 px-2 py-1"><span id="ethToTokenRate" class="font-semibold"></span> per token</p>
             </div>
 
             <button class="mt-4 py-2 rounded bg-green-500 text-white font-semibold transition hover:bg-green-600">BUY</button>
@@ -45,12 +45,12 @@ include_once './header.php';
         <div id="sellTokensWindow" data-display="false" class="border rounded-b rounded-r p-4 flex flex-col hidden">
             <div class="flex items-center justify-between">
                 <p class="text-xs uppercase font-semibold text-gray-500 px-2 py-1">Input</p>
-                <p class="text-xs uppercase  text-gray-500 px-2 py-1">Balance: <span class="font-semibold">98.125152</span></p>
+                <p class="text-xs uppercase text-gray-500 px-2 py-1">Balance: <span id="tokenBalance" class="font-semibold">98.125152</span></p>
             </div>
 
             <div class="flex items-center">
-                <input type="text" class="flex-auto border rounded-l w-full focus:outline-none transition focus:ring-1 focus:ring-orange-600 px-2 py-2 text-sm font-medium">
-                <p class="px-4 rounded-r font-semibold text-gray-900 bg-gray-100 border border-l-0 h-full flex items-center">TKN</p>
+                <input type="text" id="sellInput" class="flex-auto border rounded-l w-full focus:outline-none transition focus:border-orange-600 px-2 py-2 text-sm font-medium">
+                <p id="tokenSymbol" class="px-4 rounded-r font-semibold text-gray-900 bg-gray-100 border border-l-0 h-full flex items-center"></p>
             </div>
 
             <div class="flex items-center justify-between mt-4">
@@ -58,13 +58,13 @@ include_once './header.php';
             </div>
 
             <div class="flex items-center">
-                <input type="text" disabled class="flex-auto border rounded-l w-full focus:outline-none transition focus:ring-1 focus:ring-orange-600 px-2 py-2 text-sm font-medium">
+                <input type="text" id="sellOutput" disabled class="flex-auto border rounded-l w-full focus:outline-none transition focus:ring-1 focus:ring-orange-600 px-2 py-2 text-sm font-medium">
                 <p class="px-4 rounded-r font-semibold text-gray-900 bg-gray-100 border border-l-0 h-full flex items-center">ETH</p>
             </div>
 
             <div class="flex items-center justify-between">
                 <p class="text-xs uppercase text-gray-500 px-2 py-1">Exchange rate</p>
-                <p class="text-xs uppercase text-gray-500 px-2 py-1"><span class="font-semibold">1.25 ETH</span> per token</p>
+                <p class="text-xs uppercase text-gray-500 px-2 py-1"><span id="tokenToEthRate" class="font-semibold"></span> per ETH</p>
             </div>
 
             <button class="mt-4 py-2 rounded bg-red-500 text-white font-semibold transition hover:bg-red-600">SELL</button>

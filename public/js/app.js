@@ -218,7 +218,8 @@ App = {
 
         const monthlyRent = property.monthlyRent.toNumber();
         const propertyAddress = property.propertyAddress;
-        const value = property.price.toNumber();
+        const postcode = property.postcode;
+        const price = property.price.toNumber();
 
         // Get total supply of a token
         const token = await App.contracts.ERC20.at(property.tokenAddress);
@@ -228,7 +229,7 @@ App = {
         // Find profit per token and round it to 2 d.p.
         const profitPerToken = Math.round((monthlyRent/totalSupply)*100)/100;
 
-        const singleTokenPrice = Math.round((value/totalSupply)*100)/100;
+        const singleTokenPrice = Math.round((price/totalSupply)*100)/100;
 
         const nBedrooms = property.nBedrooms.toNumber();
         const nShowers = property.nShowers.toNumber();
@@ -240,9 +241,9 @@ App = {
                 </div>
                 <div class="flex flex-col lg:flex-row shadow -mt-16 mx-6">
                     <div class="bg-orange-700 p-8 rounded-l">
-                        <p class="text-4xl font-bold text-gray-50">$1,620,000</p>
-                        <p class="text-sm text-gray-300">32 Madeup Road</p>
-                        <p class="text-sm text-gray-300">GU2 8EN</p>
+                        <p class="text-4xl font-bold text-gray-50">$`+price+`</p>
+                        <p class="text-sm text-gray-300">`+propertyAddress+`</p>
+                        <p class="text-sm text-gray-300 uppercase">`+postcode+`</p>
                     </div>
                     <div class="flex-auto flex flex-row lg:flex-col bg-gray-900 bg-opacity-95 rounded-r">
                         <!-- Top row -->
@@ -280,6 +281,55 @@ App = {
                 </div>
             </div>
         `)
+
+        App.renderBalances(property, token);
+    },
+
+    renderBalances: async (property, token) => {
+        let ethBalance = await web3.eth.getBalance(App.account);
+        ethBalance = web3.utils.fromWei(ethBalance, "ether")
+        $('#ethBalance').html(ethBalance)
+
+        const tokenSymbol = await token.symbol();
+        $('[id="tokenSymbol"]').html(tokenSymbol)
+
+        token.balanceOf(App.account, function(err, result) {
+            if (err) {
+                console.log('Error getting token balance');
+            } else {
+                const tokenBalance = result;
+                $('#tokenBalance').html(tokenBalance)
+            }
+        })
+
+        let totalSupply = await token.totalSupply();
+        totalSupply = totalSupply.toNumber();
+
+        // How many tokens can be bought by 1 eth
+        const ethToTokenRate = (totalSupply/property.price.toNumber())
+        $('#ethToTokenRate').html(ethToTokenRate.toFixed(5) + ' ETH')
+
+        const tokenToEthRate = (property.price.toNumber()/totalSupply)
+        $('#tokenToEthRate').html(tokenToEthRate.toFixed(5) + ' ' + tokenSymbol)
+        
+        $('#buyInput').on('input', function() {
+            let output = parseFloat($(this).val())*ethToTokenRate;
+            if (output == 0 || $(this).val() == "" || isNaN(output)){
+                $('#buyOutput').val(0)
+            } else {
+                $('#buyOutput').val(output.toFixed(5))
+            }
+        })
+
+        $('#sellInput').on('input', function() {
+            let output = parseFloat($(this).val())*tokenToEthRate;
+            if (output == 0 || $(this).val() == "" || isNaN(output)){
+                $('#sellOutput').val(0)
+            } else {
+                $('#sellOutput').val(output.toFixed(5))
+            }
+        })
+        
     }
 
 }
@@ -331,11 +381,10 @@ $(() => {
         var _images = [_image1, _image2, _image3, _image4];
         
         App.createProperty(_propertyAddress, _postcode, _nBedrooms, _nShowers, _images, _price, _monthlyRent, _nTokens, _tokenSymbol)
-    })
-
-    
+    }) 
 
     $('#showBuy').on('click', () => {
+        $('#buyInput, #sellInput, #buyOutput, #sellOutput').val("")
         if ($('#buyTokensWindow').attr('data-display') != true) {
             $('#buyTokensWindow').removeClass('hidden')
             $('#sellTokensWindow').addClass('hidden')
