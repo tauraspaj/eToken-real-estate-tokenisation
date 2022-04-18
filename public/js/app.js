@@ -94,11 +94,11 @@ App = {
 
             // Get total supply of a token
             const token = await App.contracts.ERC20.at(property.tokenAddress);
-            // console.log(property.tokenAddress);
             let totalSupply = await token.totalSupply();
-            totalSupply = totalSupply.toNumber();
+            totalSupply = parseFloat(web3.utils.fromWei(totalSupply.toString(), 'ether'))
+
             // Find profit per token and round it to 2 d.p.
-            const profitPerToken = Math.round((monthlyRent/totalSupply)*100)/100;
+            const profitPerToken = (monthlyRent/totalSupply).toFixed(5)
 
             const nBedrooms = property.nBedrooms.toNumber();
             const nShowers = property.nShowers.toNumber();
@@ -117,8 +117,8 @@ App = {
                         <div class="p-4 border-b">
                             <p class="text-gray-900 font-bold text-xl whitespace-nowrap">Rent per token: $`+profitPerToken+`</p>
                             <p class="text-gray-400 text-sm whitespace-nowrap truncate mb-4">`+propertyAddress+`</p>
-                            <div class="rounded bg-green-500 text-white inline-block text-sm px-2 py-1 ">Value: <span class="font-medium">$`+value+`</span></div>
-                            <div class="rounded bg-green-500 text-white inline-block text-sm px-2 py-1 ">Tokens left: <span class="font-medium">250000</span></div>
+                            <div class="rounded bg-green-500 text-white inline-block text-sm px-2 py-1 ">Value: <span class="font-medium">$`+value.toLocaleString('en-US')+`</span></div>
+                            <div class="rounded bg-green-500 text-white inline-block text-sm px-2 py-1 ">Token supply: <span class="font-medium">`+totalSupply.toLocaleString('en-US')+`</span></div>
                         </div>
                         <!-- Room information -->
                         <div class="grid grid-cols-3">
@@ -139,7 +139,7 @@ App = {
                             <div class="flex flex-col border-r justify-center items-center p-2">
                                 <div class="flex space-x-2 items-center">
                                     <i class="fa-brands fa-bitcoin text-orange-600"></i>
-                                    <p class="font-semibold text-gray-900">$`+monthlyRent+`</p>
+                                    <p class="font-semibold text-gray-900">$`+monthlyRent.toLocaleString('en-US')+`</p>
                                 </div>
                                 <p class="text-gray-500 text-sm">Monthly rent</p>
                             </div>
@@ -151,7 +151,9 @@ App = {
     },
 
     createProperty: async (_propertyAddress, _postcode, _nBedrooms, _nShowers, _images, _price, _monthlyRent, _nTokens, _tokenSymbol) => {
-        await App.propertyFactory.createProperty(_propertyAddress, _postcode, _nBedrooms, _nShowers, _images, _price, _monthlyRent, _nTokens, _tokenSymbol, {from: App.account});
+        let _tokensInWei = web3.utils.toWei(_nTokens.toString(), 'ether')
+
+        await App.propertyFactory.createProperty(_propertyAddress, _postcode, _nBedrooms, _nShowers, _images, _price, _monthlyRent, _tokensInWei, _tokenSymbol, {from: App.account});
         window.location.reload();
     },
 
@@ -172,9 +174,10 @@ App = {
             // Get total supply of a token
             const token = await App.contracts.ERC20.at(property.tokenAddress);
             let totalSupply = await token.totalSupply();
-            totalSupply = totalSupply.toNumber();
+            totalSupply = parseFloat(web3.utils.fromWei(totalSupply.toString(), 'ether'))
+            
             // Find profit per token and round it to 2 d.p.
-            const profitPerToken = Math.round((monthlyRent/totalSupply)*100)/100;
+            const profitPerToken = monthlyRent/totalSupply
 
             const nBedrooms = property.nBedrooms.toNumber();
             const nShowers = property.nShowers.toNumber();
@@ -184,25 +187,25 @@ App = {
                 $('#owned-properties').append(`
                     <tr class="border-t">
                         <td class="py-2 text-center whitespace-nowrap px-2">`+propertyAddress+`</td>
-                        <td class="py-2 text-center whitespace-nowrap px-2">`+monthlyRent+`</td>
-                        <td class="py-2 text-center whitespace-nowrap px-2">`+totalSupply+`</td>
-                        <td class="py-2 text-center whitespace-nowrap px-2">$`+value+`</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">$`+monthlyRent.toLocaleString('en-US')+`</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">`+totalSupply.toLocaleString('en-US')+`</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">$`+value.toLocaleString('en-US')+`</td>
                         <td class="py-2 text-center whitespace-nowrap px-2">View</td>
                     </tr>
                 `)
             }
 
             let balance = await token.balanceOf(App.account)
-            balance = balance.toNumber();
+            balance = parseFloat(web3.utils.fromWei(balance.toString(), 'ether'))
             
             if (balance > 0) {
                 $('#owned-tokens').append(`
                     <tr class="border-t">
                         <td class="py-2 text-center whitespace-nowrap px-2">`+propertyAddress+`</td>
-                        <td class="py-2 text-center whitespace-nowrap px-2">$`+monthlyRent+`</td>
-                        <td class="py-2 text-center whitespace-nowrap px-2">`+balance+`</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">$`+monthlyRent.toLocaleString('en-US')+`</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">`+balance.toLocaleString('en-US')+`</td>
                         <td class="py-2 text-center whitespace-nowrap px-2">$999</td>
-                        <td class="py-2 text-center whitespace-nowrap px-2">$`+profitPerToken*balance+`</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">$`+(profitPerToken*balance).toLocaleString('en-US')+`</td>
                         <td class="py-2 text-center whitespace-nowrap px-2">View</td>
                     </tr>
                 `)
@@ -356,6 +359,14 @@ $(() => {
             const propertyId = url.split("=").pop();
             App.renderProperty(propertyId);
         }
+
+        // const amount = 0.0001
+        // web3.utils.toWei(amount.toString())
+        // console.log(amount);
+        // let tst = await toBaseUnit("152.62", 18, web3.utils.BN).toString()
+        // let ha = web3.utils.fromWei('152620000000000000000','ether')
+        // console.log(tst);
+        // console.log(ha);
     })
     // Mobile menu
     $('#burger-menu, #mobile-curtain, #close-mobile-overlay').on('click', () => $('#mobile-overlay').slideToggle())
@@ -407,4 +418,79 @@ $(() => {
             $('#showBuy').addClass('text-gray-500')
         }
     })
+
 })
+
+let isString = (s) => {
+    return (typeof s === 'string' || s instanceof String)
+}
+
+let toBaseUnit = (value, decimals, BN) => {
+    if (!isString(value)) {
+      throw new Error('Pass strings to prevent floating point precision issues.')
+    }
+    const ten = new BN(10);
+    const base = ten.pow(new BN(decimals));
+  
+    // Is it negative?
+    let negative = (value.substring(0, 1) === '-');
+    if (negative) {
+      value = value.substring(1);
+    }
+  
+    if (value === '.') { 
+      throw new Error(
+      `Invalid value ${value} cannot be converted to`
+      + ` base unit with ${decimals} decimals.`); 
+    }
+  
+    // Split it into a whole and fractional part
+    let comps = value.split('.');
+    if (comps.length > 2) { throw new Error('Too many decimal points'); }
+  
+    let whole = comps[0], fraction = comps[1];
+  
+    if (!whole) { whole = '0'; }
+    if (!fraction) { fraction = '0'; }
+    if (fraction.length > decimals) { 
+      throw new Error('Too many decimal places'); 
+    }
+  
+    while (fraction.length < decimals) {
+      fraction += '0';
+    }
+  
+    whole = new BN(whole);
+    fraction = new BN(fraction);
+    let wei = (whole.mul(base)).add(fraction);
+  
+    if (negative) {
+      wei = wei.neg();
+    }
+  
+    return new BN(wei.toString(10), 10);
+}
+
+let getEthRate = () => {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD',
+            type: 'GET',
+            success: function (data) {
+                resolve(data.USD)
+            }
+        })
+    })
+}
+
+let convertUsdToEth = async (usd) => {
+    console.log('USD: ' + usd);
+    let rate = await getEthRate();
+    console.log('Rate: ' + rate);
+    return usd/rate
+}
+
+let convertEthToUsd = async (eth) => {
+    let rate = await getEthRate();
+    return eth*rate
+}

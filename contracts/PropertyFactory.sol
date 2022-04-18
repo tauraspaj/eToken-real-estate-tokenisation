@@ -34,7 +34,8 @@ contract PropertyFactory is Context, Ownable {
     );
 
     constructor() {
-        createProperty("32 Madeup Road, UK", "MD2 RD8", 51, 4, ["https://i.gyazo.com/74ae883a4cae6657d9d52c26a315d46d.png", "https://i.gyazo.com/8fbb7e2bc4531633db182e9a8fe5a635.png", "https://i.gyazo.com/74ae883a4cae6657d9d52c26a315d46d.png", "https://i.gyazo.com/74ae883a4cae6657d9d52c26a315d46d.png"], 162000, 2500, 10000, "TKN");
+        // total supply: 1 000 000 = 1 000 000 000 000 000 000 000 000
+        createProperty("32 Madeup Road, UK", "MD2 RD8", 51, 4, ["https://i.gyazo.com/74ae883a4cae6657d9d52c26a315d46d.png", "https://i.gyazo.com/8fbb7e2bc4531633db182e9a8fe5a635.png", "https://i.gyazo.com/74ae883a4cae6657d9d52c26a315d46d.png", "https://i.gyazo.com/74ae883a4cae6657d9d52c26a315d46d.png"], 560000, 3000, 1000000000000000000000000, "TKN");
     }
 
     function _createProperty(string memory _propertyAddress, string memory _postcode, uint16 _nBedrooms, uint16 _nShowers, string[4] memory _images, uint _price, uint _monthlyRent, uint _nTokens, string memory _tokenSymbol, address owner) internal {
