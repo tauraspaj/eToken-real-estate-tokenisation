@@ -3,7 +3,7 @@ $activePage = 'property';
 include_once './header.php';
 ?>
 
-<section class="container mx-auto px-4 py-16 grid grid-cols-1 md:grid-cols-2 gap-16">
+<section class="container mx-auto px-4 py-16 grid grid-cols-1 md:grid-cols-2 gap-16 relative">
     <div id="singlePropertyDisplay" class="flex flex-col space-y-4">
         <!-- Filled via js -->
     </div>
@@ -69,6 +69,11 @@ include_once './header.php';
 
             <button class="mt-4 py-2 rounded bg-red-500 text-white font-semibold transition hover:bg-red-600">SELL</button>
         </div>
+    </div>
+
+    <div id="simulateRentPayment" class="fixed rounded-full bg-green-500 px-4 py-2 bottom-6 right-6 transition hover:bg-green-700 cursor-pointer flex justify-center items-center transform hover:scale-110" title="Simulate rent payment">
+        <svg class="w-10 h-10 text-gray-50" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+        <p class="text-gray-50 text-lg font-medium">SIMULATE RENT PAYMENT</p>
     </div>
 </section>
 
