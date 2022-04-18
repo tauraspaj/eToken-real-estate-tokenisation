@@ -37,6 +37,9 @@ contract ERC20 is Context, IERC20 {
 
     mapping(address => mapping(address => uint256)) private _allowances;
 
+    address[] public owners;
+    uint public ownersCount = 0;
+
     uint256 private _totalSupply;
 
     string private _name;
@@ -56,6 +59,9 @@ contract ERC20 is Context, IERC20 {
         _symbol = symbol_;
         _totalSupply = totalSupply_;
         _balances[account] = totalSupply_;
+
+        ownersCount++;
+        owners.push(account);
     }
 
     /**
@@ -115,7 +121,44 @@ contract ERC20 is Context, IERC20 {
     function transfer(address to, uint256 amount) public virtual override returns (bool) {
         address owner = _msgSender();
         _transfer(owner, to, amount);
+        checkOwners(owner, to);
         return true;
+    }
+
+    // When a transaction happens, we must update the owners array
+    // If the seller now has 0 tokens, remove them from array
+    // If it's a new buyer, add them to the list
+    function checkOwners(address seller, address buyer) private {
+        // Check that buyer has more than 0 tokens and is not already on the owners list
+        (bool buyerBool, ) = exists(buyer);
+        if (balanceOf(buyer) > 0 && buyerBool == false ) {
+            ownersCount++;
+            owners.push(buyer);
+        }
+
+        // Check if the seller have now sold all their tokens
+        if (balanceOf(seller) <= 0) {
+            (,uint index) = exists(seller);
+            removeFromOwners( index );
+        }
+    }
+
+    function removeFromOwners(uint index) private {
+        owners[index] = owners[ownersCount-1];
+        owners.pop();
+        ownersCount--;
+    }
+
+    function exists(address user) public view returns (bool, uint) {
+        uint returnId = 0;
+        bool doesExist = false;
+        for (uint i = 0; i < ownersCount; i++) {
+            if (owners[i] == user) {
+                returnId = i;
+                doesExist = true;
+            }
+        }
+        return (doesExist, returnId);
     }
 
     /**
