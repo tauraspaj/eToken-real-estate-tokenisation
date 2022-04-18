@@ -227,12 +227,14 @@ App = {
         // Get total supply of a token
         const token = await App.contracts.ERC20.at(property.tokenAddress);
         // console.log(property.tokenAddress);
-        let totalSupply = await token.totalSupply();
-        totalSupply = totalSupply.toNumber();
-        // Find profit per token and round it to 2 d.p.
-        const profitPerToken = Math.round((monthlyRent/totalSupply)*100)/100;
 
-        const singleTokenPrice = Math.round((price/totalSupply)*100)/100;
+        let totalSupply = await token.totalSupply();
+        totalSupply = parseFloat(web3.utils.fromWei(totalSupply.toString(), 'ether'))
+
+        // Find profit per token and round it to 2 d.p.
+        const profitPerToken = monthlyRent/totalSupply
+
+        const singleTokenPrice = price/totalSupply
 
         const nBedrooms = property.nBedrooms.toNumber();
         const nShowers = property.nShowers.toNumber();
@@ -244,7 +246,7 @@ App = {
                 </div>
                 <div class="flex flex-col lg:flex-row shadow -mt-16 mx-6">
                     <div class="bg-orange-700 p-8 rounded-l">
-                        <p class="text-4xl font-bold text-gray-50">$`+price+`</p>
+                        <p class="text-4xl font-bold text-gray-50">$`+price.toLocaleString('en-US')+`</p>
                         <p class="text-sm text-gray-300">`+propertyAddress+`</p>
                         <p class="text-sm text-gray-300 uppercase">`+postcode+`</p>
                     </div>
@@ -257,7 +259,7 @@ App = {
                             </div>
                             <div class="flex-1 flex justify-center items-center flex-col space-y-1 border-b border-r border-gray-700 p-2">
                                 <i class="fa-solid fa-bath text-sm text-center text-gray-50"></i>
-                                <p class="text-gray-50 uppercase text-sm text-center">`+nBedrooms+` Bathrooms</p>
+                                <p class="text-gray-50 uppercase text-sm text-center">`+nShowers+` Bathrooms</p>
                             </div>
                             <div class="flex-1 flex justify-center items-center flex-col space-y-1 border-b border-r lg:border-r-0 border-gray-700 p-2">
                                 <i class="fa-solid fa-dollar-sign text-sm text-center text-gray-50"></i>
@@ -267,15 +269,15 @@ App = {
                         <!-- Bottom Row -->
                         <div class="flex-1 flex flex-col lg:flex-row">
                             <div class="flex-1 flex justify-center items-center flex-col space-y-1 border-b lg:border-b-0 border-gray-700 lg:border-r p-2">
-                                <p class="text-gray-50 uppercase text-sm text-center">25000</p>
-                                <p class="text-gray-50 uppercase text-sm text-center">Tokens Left</p>
+                                <p class="text-gray-50 uppercase text-sm text-center">`+totalSupply.toLocaleString('en-US')+`</p>
+                                <p class="text-gray-50 uppercase text-sm text-center">Token supply</p>
                             </div>
                             <div class="flex-1 flex justify-center items-center flex-col space-y-1 border-b lg:border-b-0 border-gray-700 lg:border-r p-2">
-                                <p class="text-gray-50 uppercase text-sm text-center">$`+singleTokenPrice+`</p>
+                                <p class="text-gray-50 uppercase text-sm text-center">$`+singleTokenPrice.toFixed(5)+`</p>
                                 <p class="text-gray-50 uppercase text-sm text-center">Single Token Price</p>
                             </div>
                             <div class="flex-1 flex justify-center items-center flex-col space-y-1 p-2">
-                                <p class="text-gray-50 uppercase text-sm text-center">$`+profitPerToken+`</p>
+                                <p class="text-gray-50 uppercase text-sm text-center">$`+profitPerToken.toFixed(5)+`</p>
                                 <p class="text-gray-50 uppercase text-sm text-center">Rent Per Token</p>
                             </div>
                         </div>
@@ -306,7 +308,7 @@ App = {
         })
 
         let totalSupply = await token.totalSupply();
-        totalSupply = totalSupply.toNumber();
+        totalSupply = parseFloat(web3.utils.fromWei(totalSupply.toString(), 'ether'))
 
         // How many tokens can be bought by 1 eth
         const ethToTokenRate = (totalSupply/property.price.toNumber())
