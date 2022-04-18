@@ -288,6 +288,12 @@ App = {
         `)
 
         App.renderBalances(property, token);
+
+        // Hide 'Simulate rent' button if not the owner
+        const owner = await App.propertyFactory.propertyToOwner(propertyId)
+        if (owner.toUpperCase() != App.account.toUpperCase()) {
+            $('#simulateRentPayment').hide();
+        }
     },
 
     renderBalances: async (property, token) => {
