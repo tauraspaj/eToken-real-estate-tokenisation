@@ -31,12 +31,11 @@ include_once './header.php';
     <div>
         <p class="text-sm font-medium text-orange-600 uppercase tracking-wide px-4 py-2 border inline-block rounded-t-lg border-b-0">Owned tokens</p>
     </div>
-    <div class="border rounded-b rounded-r overflow-x-auto min-w-full">
+    <div class="border rounded-b rounded-r overflow-x-auto overflow-y-hidden min-w-full">
         <table class="w-full">
             <thead>
                 <tr class="uppercase text-sm">
                     <th class="py-4 px-2 whitespace-nowrap">Address</th>
-                    <th class="py-4 px-2 whitespace-nowrap">Monthly Rent</th>
                     <th class="py-4 px-2 whitespace-nowrap">Token Balance</th>
                     <th class="py-4 px-2 whitespace-nowrap">Balance (ETH)</th>
                     <th class="py-4 px-2 whitespace-nowrap">Monthly Income</th>
