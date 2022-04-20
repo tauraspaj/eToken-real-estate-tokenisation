@@ -190,23 +190,24 @@ App = {
                         <td class="py-2 text-center whitespace-nowrap px-2">$`+monthlyRent.toLocaleString('en-US')+`</td>
                         <td class="py-2 text-center whitespace-nowrap px-2">`+totalSupply.toLocaleString('en-US')+`</td>
                         <td class="py-2 text-center whitespace-nowrap px-2">$`+value.toLocaleString('en-US')+`</td>
-                        <td class="py-2 text-center whitespace-nowrap px-2">View</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2"><a href="./property.php?id=`+i+`" class="transition hover:text-orange-600">View</a></td>
                     </tr>
                 `)
             }
 
             let balance = await token.balanceOf(App.account)
             balance = parseFloat(web3.utils.fromWei(balance.toString(), 'ether'))
+
+            let valueOfTokens = (value/totalSupply)*balance;
             
             if (balance > 0) {
                 $('#owned-tokens').append(`
                     <tr class="border-t">
                         <td class="py-2 text-center whitespace-nowrap px-2">`+propertyAddress+`</td>
-                        <td class="py-2 text-center whitespace-nowrap px-2">$`+monthlyRent.toLocaleString('en-US')+`</td>
                         <td class="py-2 text-center whitespace-nowrap px-2">`+balance.toLocaleString('en-US')+`</td>
-                        <td class="py-2 text-center whitespace-nowrap px-2">$999</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2">$`+valueOfTokens.toLocaleString('en-US')+`</td>
                         <td class="py-2 text-center whitespace-nowrap px-2">$`+(profitPerToken*balance).toLocaleString('en-US')+`</td>
-                        <td class="py-2 text-center whitespace-nowrap px-2">View</td>
+                        <td class="py-2 text-center whitespace-nowrap px-2"><a href="./property.php?id=`+i+`" class="transition hover:text-orange-600">View</a></td>
                     </tr>
                 `)
             }
