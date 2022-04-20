@@ -37,7 +37,7 @@ include_once './header.php';
                 <tr class="uppercase text-sm">
                     <th class="py-4 px-2 whitespace-nowrap">Address</th>
                     <th class="py-4 px-2 whitespace-nowrap">Token Balance</th>
-                    <th class="py-4 px-2 whitespace-nowrap">Balance (ETH)</th>
+                    <th class="py-4 px-2 whitespace-nowrap">Token Value</th>
                     <th class="py-4 px-2 whitespace-nowrap">Monthly Income</th>
                     <th class="py-4 px-2 whitespace-nowrap">View</th>
                 </tr>
