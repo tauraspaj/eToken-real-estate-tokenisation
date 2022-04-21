@@ -70,10 +70,10 @@ App = {
         App.contracts.ERC20 = TruffleContract(erc20);
         App.contracts.ERC20.setProvider(App.web3Provider);
 
-        // const erc20TokenFactory = await $.getJSON('./../build/contracts/ERC20TokenFactory.json');
-        // App.contracts.ERC20TokenFactory = TruffleContract(erc20TokenFactory);
-        // App.contracts.ERC20TokenFactory.setProvider(App.web3Provider);
-        // App.erc20TokenFactory = await App.contracts.ERC20TokenFactory.deployed();
+        const exchange = await $.getJSON('./../build/contracts/Exchange.json');
+        App.contracts.Exchange = TruffleContract(exchange);
+        App.contracts.Exchange.setProvider(App.web3Provider);
+        App.exchange = await App.contracts.Exchange.deployed();
     },
 
     renderMarketplace: async () => {
@@ -217,13 +217,13 @@ App = {
 
     renderProperty: async (propertyId) => {
         const property = await App.propertyFactory.properties(propertyId);
-
         const images = await App.propertyFactory.getImages(propertyId);
-
         const monthlyRent = property.monthlyRent.toNumber();
         const propertyAddress = property.propertyAddress;
         const postcode = property.postcode;
         const price = property.price.toNumber();
+        let ethRate = await getEthRate()
+        let priceInEth = price/ethRate;
 
         // Get total supply of a token
         const token = await App.contracts.ERC20.at(property.tokenAddress);
@@ -233,9 +233,7 @@ App = {
 
         // Find profit per token and round it to 2 d.p.
         const profitPerToken = monthlyRent/totalSupply
-
         const singleTokenPrice = price/totalSupply
-
         const nBedrooms = property.nBedrooms.toNumber();
         const nShowers = property.nShowers.toNumber();
 
@@ -249,6 +247,7 @@ App = {
                 <div class="flex flex-col lg:flex-row shadow -mt-16 mx-6">
                     <div class="bg-orange-700 p-8 rounded-l">
                         <p class="text-4xl font-bold text-gray-50">$`+price.toLocaleString('en-US')+`</p>
+                        <p class="text-sm text-gray-50">= `+priceInEth.toFixed(5).toLocaleString('en-US')+` ETH</p>
                         <p class="text-sm text-gray-300">`+propertyAddress+`</p>
                         <p class="text-sm text-gray-300 uppercase">`+postcode+`</p>
                     </div>
@@ -290,6 +289,7 @@ App = {
         `)
 
         App.renderBalances(property, token);
+        App.renderExchange(token, property.tokenAddress, property);
 
         // Hide 'Simulate rent' button if not the owner
         const owner = await App.propertyFactory.propertyToOwner(propertyId)
@@ -300,17 +300,20 @@ App = {
 
     renderBalances: async (property, token) => {
         let ethBalance = await web3.eth.getBalance(App.account);
-        ethBalance = web3.utils.fromWei(ethBalance, "ether")
-        $('#ethBalance').html(ethBalance)
+        ethBalance = parseFloat(web3.utils.fromWei(ethBalance, "ether"))
+        $('#ethBalance').html(ethBalance.toFixed(5))
 
         const tokenSymbol = await token.symbol();
         $('[id="tokenSymbol"]').html(tokenSymbol)
+
+        let tokensOnSale = await token.balanceOf(App.exchange.address)
+        $('#tokensOnSale').html(web3.utils.fromWei(tokensOnSale.toString(), "ether"))
 
         token.balanceOf(App.account, function(err, result) {
             if (err) {
                 console.log('Error getting token balance');
             } else {
-                const tokenBalance = result;
+                const tokenBalance = web3.utils.fromWei(result.toString(), "ether");
                 $('#tokenBalance').html(tokenBalance)
             }
         })
@@ -318,15 +321,15 @@ App = {
         let totalSupply = await token.totalSupply();
         totalSupply = parseFloat(web3.utils.fromWei(totalSupply.toString(), 'ether'))
 
-        // How many tokens can be bought by 1 eth
-        const ethToTokenRate = (totalSupply/property.price.toNumber())
-        $('#ethToTokenRate').html(ethToTokenRate.toFixed(5) + ' ETH')
+        let ethRate = await getEthRate();
+        let priceInEth = property.price/ethRate;
+        // Calculate conversion rate for this property
+        let rate = calculateRate(totalSupply, priceInEth)
 
-        const tokenToEthRate = (property.price.toNumber()/totalSupply)
-        $('#tokenToEthRate').html(tokenToEthRate.toFixed(5) + ' ' + tokenSymbol)
+        $('[id="displayRate"]').html('1 ETH = ' + rate.toFixed(5) + ' ' + tokenSymbol)
         
         $('#buyInput').on('input', function() {
-            let output = parseFloat($(this).val())*ethToTokenRate;
+            let output = parseFloat($(this).val())*rate;
             if (output == 0 || $(this).val() == "" || isNaN(output)){
                 $('#buyOutput').val(0)
             } else {
@@ -335,7 +338,7 @@ App = {
         })
 
         $('#sellInput').on('input', function() {
-            let output = parseFloat($(this).val())*tokenToEthRate;
+            let output = parseFloat($(this).val())/rate;
             if (output == 0 || $(this).val() == "" || isNaN(output)){
                 $('#sellOutput').val(0)
             } else {
@@ -343,6 +346,35 @@ App = {
             }
         })
         
+    },
+
+    renderExchange: async (token, tokenAddress, property) => {
+        console.log(App.exchange.address);
+        $('#sellTokens').on('click', async () => {
+            // Sell input is the number of tokens to sell
+            let sellInput = $('#sellInput').val();
+            // Sell output is amount of ether to receive
+            let sellOutput = $('#sellOutput').val();
+            // Approve
+            await token.approve(App.exchange.address, web3.utils.toWei(sellInput.toString(), "ether"), {from: App.account});
+
+            // Execute sell
+            let result = await App.exchange.sellTokens(tokenAddress, web3.utils.toWei(sellInput.toString(), "ether"), web3.utils.toWei(sellOutput.toString(), "ether"), {from: App.account});
+            App.renderBalances(property, token);
+            $('#buyInput, #buyOutput, #sellInput, #sellOutput').val("");
+            // alert("You have successfully sold " + sellInput + " tokens!")
+        })
+
+        $('#buyTokens').on('click', async () => {
+            let buyInput = $('#buyInput').val(); // How much ETH is paid
+            let buyOutput = $('#buyOutput').val(); // How many tokens should be received
+
+            // Execute buy
+            const result = await App.exchange.buyTokens(tokenAddress, web3.utils.toWei(buyOutput.toString(), "ether"), {from: App.account, value: web3.utils.toWei(buyInput.toString(), "ether")})
+            App.renderBalances(property, token);
+            $('#buyInput, #buyOutput, #sellInput, #sellOutput').val("");
+            // alert("You have successfully bought " + buyAmount + " tokens!")
+        })
     }
 
 }
@@ -479,6 +511,10 @@ let toBaseUnit = (value, decimals, BN) => {
     }
   
     return new BN(wei.toString(10), 10);
+}
+
+let calculateRate = (totalSupply, propertyValue) => {
+    return totalSupply/propertyValue;
 }
 
 let getEthRate = () => {
