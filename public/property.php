@@ -9,6 +9,9 @@ include_once './header.php';
     </div>
     
     <div id="exchange" class="flex flex-col">
+        <div class="border rounded p-4 flex justify-center items-center mb-8">
+            <p class="uppercase text-gray-500 text-sm">Token: <span class="font-medium text-gray-900" id="tokenAddress"></span></p>
+        </div>
         <div>
             <p id="showBuy" class="text-sm font-medium text-orange-600 uppercase tracking-wide px-4 py-2 border inline-block rounded-t-lg border-b-0 cursor-pointer">Buy</p>
             <p id="showSell" class="text-sm font-medium text-gray-500 uppercase tracking-wide px-4 py-2 border inline-block rounded-t-lg border-b-0 cursor-pointer">Sell</p>

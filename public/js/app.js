@@ -227,7 +227,6 @@ App = {
 
         // Get total supply of a token
         const token = await App.contracts.ERC20.at(property.tokenAddress);
-        // console.log(property.tokenAddress);
 
         let totalSupply = await token.totalSupply();
         totalSupply = parseFloat(web3.utils.fromWei(totalSupply.toString(), 'ether'))
@@ -239,6 +238,8 @@ App = {
 
         const nBedrooms = property.nBedrooms.toNumber();
         const nShowers = property.nShowers.toNumber();
+
+        $('#tokenAddress').html(property.tokenAddress)
 
         $('#singlePropertyDisplay').html(`
             <div>
