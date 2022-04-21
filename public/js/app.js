@@ -84,7 +84,6 @@ App = {
         // Loop through each property and display it
         for (let i = 0; i < propertyCount; i++) {
             const property = await App.propertyFactory.properties(i);
-            // console.log(property);
 
             const images = await App.propertyFactory.getImages(i);
 
@@ -227,6 +226,9 @@ App = {
 
         // Get total supply of a token
         const token = await App.contracts.ERC20.at(property.tokenAddress);
+        
+        // Render property owners and their balances
+        App.renderPropertyOwners(token);
 
         let totalSupply = await token.totalSupply();
         totalSupply = parseFloat(web3.utils.fromWei(totalSupply.toString(), 'ether'))
@@ -301,20 +303,20 @@ App = {
     renderBalances: async (property, token) => {
         let ethBalance = await web3.eth.getBalance(App.account);
         ethBalance = parseFloat(web3.utils.fromWei(ethBalance, "ether"))
-        $('#ethBalance').html(ethBalance.toFixed(5))
+        $('#ethBalance').html(ethBalance.toLocaleString('en-US'))
 
         const tokenSymbol = await token.symbol();
         $('[id="tokenSymbol"]').html(tokenSymbol)
 
         let tokensOnSale = await token.balanceOf(App.exchange.address)
-        $('#tokensOnSale').html(web3.utils.fromWei(tokensOnSale.toString(), "ether"))
+        $('#tokensOnSale').html(parseFloat(web3.utils.fromWei(tokensOnSale.toString(), "ether")).toLocaleString('en-US'))
 
         token.balanceOf(App.account, function(err, result) {
             if (err) {
                 console.log('Error getting token balance');
             } else {
                 const tokenBalance = web3.utils.fromWei(result.toString(), "ether");
-                $('#tokenBalance').html(tokenBalance)
+                $('#tokenBalance').html(parseFloat(tokenBalance).toLocaleString('en-US'))
             }
         })
 
@@ -326,7 +328,7 @@ App = {
         // Calculate conversion rate for this property
         let rate = calculateRate(totalSupply, priceInEth)
 
-        $('[id="displayRate"]').html('1 ETH = ' + rate.toFixed(5) + ' ' + tokenSymbol)
+        $('[id="displayRate"]').html('1 ETH = ' + rate.toLocaleString('en-US') + ' ' + tokenSymbol)
         
         $('#buyInput').on('input', function() {
             let output = parseFloat($(this).val())*rate;
@@ -349,7 +351,7 @@ App = {
     },
 
     renderExchange: async (token, tokenAddress, property) => {
-        console.log(App.exchange.address);
+        console.log("Exchange address: "+App.exchange.address);
         $('#sellTokens').on('click', async () => {
             // Sell input is the number of tokens to sell
             let sellInput = $('#sellInput').val();
@@ -359,7 +361,8 @@ App = {
             await token.approve(App.exchange.address, web3.utils.toWei(sellInput.toString(), "ether"), {from: App.account});
 
             // Execute sell
-            let result = await App.exchange.sellTokens(tokenAddress, web3.utils.toWei(sellInput.toString(), "ether"), web3.utils.toWei(sellOutput.toString(), "ether"), {from: App.account});
+            const result = await App.exchange.sellTokens(tokenAddress, web3.utils.toWei(sellInput.toString(), "ether"), web3.utils.toWei(sellOutput.toString(), "ether"), {from: App.account});
+            
             App.renderBalances(property, token);
             $('#buyInput, #buyOutput, #sellInput, #sellOutput').val("");
             // alert("You have successfully sold " + sellInput + " tokens!")
@@ -371,9 +374,29 @@ App = {
 
             // Execute buy
             const result = await App.exchange.buyTokens(tokenAddress, web3.utils.toWei(buyOutput.toString(), "ether"), {from: App.account, value: web3.utils.toWei(buyInput.toString(), "ether")})
+
             App.renderBalances(property, token);
             $('#buyInput, #buyOutput, #sellInput, #sellOutput').val("");
             // alert("You have successfully bought " + buyAmount + " tokens!")
+        })
+    },
+
+    renderPropertyOwners: async (token) => {
+        // let test = await token.returnOwner(0);
+        let test = await token.ownersCount;
+
+        token.ownersCount(async function(err, res) {
+            let ownersCount = parseInt(res);
+            for(let i = 0; i < ownersCount; i++) {
+                let acc = await token.returnOwner(i);
+                let balance = await token.balanceOf(acc);
+                $('#displayBalances').append(`
+                    <div class="border-t p-4">
+                        <p class="text-gray-500 text-xs md:text-sm">`+acc+`</p>
+                        <p class="text-gray-500 text-xs md:text-sm"> Balance: <span class="font-medium">`+parseFloat(web3.utils.fromWei(balance.toString(), "ether")).toLocaleString('en-US')+`</span></p>
+                    </div>
+                `)
+            }
         })
     }
 
@@ -527,16 +550,4 @@ let getEthRate = () => {
             }
         })
     })
-}
-
-let convertUsdToEth = async (usd) => {
-    console.log('USD: ' + usd);
-    let rate = await getEthRate();
-    console.log('Rate: ' + rate);
-    return usd/rate
-}
-
-let convertEthToUsd = async (eth) => {
-    let rate = await getEthRate();
-    return eth*rate
 }
