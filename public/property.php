@@ -10,7 +10,7 @@ include_once './header.php';
     
     <div id="exchange" class="flex flex-col">
         <div class="border rounded p-4 flex justify-center items-center mb-8">
-            <p class="uppercase text-gray-500 text-sm">Token: <span class="font-medium text-gray-900" id="tokenAddress"></span></p>
+            <p class="uppercase text-gray-500 text-xs md:text-sm text-center">Token<br> <span class="font-medium text-gray-900" id="tokenAddress"></span></p>
         </div>
         <div>
             <p id="showBuy" class="text-sm font-medium text-orange-600 uppercase tracking-wide px-4 py-2 border inline-block rounded-t-lg border-b-0 cursor-pointer">Buy</p>
@@ -42,7 +42,7 @@ include_once './header.php';
                 <p class="text-xs uppercase text-gray-500 px-2 py-1"><span id="ethToTokenRate" class="font-semibold"></span> per token</p>
             </div>
 
-            <button class="mt-4 py-2 rounded bg-green-500 text-white font-semibold transition hover:bg-green-600">BUY</button>
+            <button id="buyToken" class="mt-4 py-2 rounded bg-green-500 text-white font-semibold transition hover:bg-green-600">BUY</button>
         </div>
 
         <div id="sellTokensWindow" data-display="false" class="border rounded-b rounded-r p-4 flex flex-col hidden">
@@ -52,7 +52,7 @@ include_once './header.php';
             </div>
 
             <div class="flex items-center">
-                <input type="text" id="sellInput" class="flex-auto border rounded-l w-full focus:outline-none transition focus:border-orange-600 px-2 py-2 text-sm font-medium">
+                <input id="sellTokenAmount" type="text" id="sellInput" class="flex-auto border rounded-l w-full focus:outline-none transition focus:border-orange-600 px-2 py-2 text-sm font-medium">
                 <p id="tokenSymbol" class="px-4 rounded-r font-semibold text-gray-900 bg-gray-100 border border-l-0 h-full flex items-center"></p>
             </div>
 
@@ -70,7 +70,7 @@ include_once './header.php';
                 <p class="text-xs uppercase text-gray-500 px-2 py-1"><span id="tokenToEthRate" class="font-semibold"></span> per ETH</p>
             </div>
 
-            <button class="mt-4 py-2 rounded bg-red-500 text-white font-semibold transition hover:bg-red-600">SELL</button>
+            <button id="sellTokens" class="mt-4 py-2 rounded bg-red-500 text-white font-semibold transition hover:bg-red-600">SELL</button>
         </div>
     </div>
 
