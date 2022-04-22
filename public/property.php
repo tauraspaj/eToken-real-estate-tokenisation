@@ -10,7 +10,7 @@ include_once './header.php';
     
     <div id="exchange" class="flex flex-col">
         <div class="border rounded p-4 flex justify-center items-center mb-8">
-            <p class="uppercase text-gray-500 text-xs md:text-sm text-center">Token<br> <span class="font-medium text-gray-900" id="tokenAddress"></span></p>
+            <p class="text-gray-500 text-xs md:text-sm text-center">Token<br> <span class="font-medium text-gray-900" id="tokenAddress"></span></p>
         </div>
         <div>
             <p id="showBuy" class="text-sm font-medium text-orange-600 uppercase tracking-wide px-4 py-2 border inline-block rounded-t-lg border-b-0 cursor-pointer">Buy</p>
