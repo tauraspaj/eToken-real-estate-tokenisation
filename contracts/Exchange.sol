@@ -24,7 +24,7 @@ contract Exchange is PropertyFactory{
     );
 
     function increaseExchangeBalance() payable public {
-        payable(address(this)).transfer(msg.value);
+        // payable(address(this)).transfer(msg.value);
     }
 
     function sellTokens(address tokenAddress, uint _tokenAmount, uint _etherAmount) public{
@@ -53,8 +53,4 @@ contract Exchange is PropertyFactory{
         // Emit an event
         emit TokensPurchased(msg.sender, tokenAddress, _tokenAmount);
     }
-
-    // function changePropertyName(uint _propertyId, string calldata _newName) external onlyOwnerOf(_propertyId) {
-    //     properties[_propertyId].name = _newName;
-    // }
 }
