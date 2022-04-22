@@ -17,6 +17,7 @@
     "truffle-contract": "3.0.6"
   },
   "dependencies": {
+    "@prb/math": "^2.5.0",
     "web3": "^0.20.6"
   }
 }
