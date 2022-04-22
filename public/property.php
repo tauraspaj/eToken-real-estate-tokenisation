@@ -73,8 +73,11 @@ include_once './header.php';
             <button id="sellTokens" class="mt-4 py-2 rounded bg-red-500 text-white font-semibold transition hover:bg-red-600">SELL</button>
         </div>
 
-        <div id="displayBalances" class="border rounded flex flex-col mt-8">
-            <p class="uppercase text-gray-500 text-xs md:text-sm p-4">Balances</p>
+        <div class="border rounded flex flex-col mt-8">
+            <p class="uppercase text-gray-500 text-xs md:text-sm p-4">Balances (<span id="displayNumberOfOwners" class="font-medium"></span>)</p>
+            <div id="displayBalances">
+
+            </div>
         </div>
     </div>
 

@@ -98,6 +98,7 @@ App = {
 
             let tokensOnSale = await token.balanceOf(App.exchange.address);
             tokensOnSale = parseFloat(web3.utils.fromWei(tokensOnSale.toString(), 'ether'))
+            let colorDisplay = (tokensOnSale > 0) ? 'bg-green-500' : 'bg-red-500';
 
             // Find profit per token and round it to 2 d.p.
             const profitPerToken = (monthlyRent/totalSupply).toFixed(5)
@@ -120,7 +121,7 @@ App = {
                             <p class="text-gray-900 font-bold text-xl whitespace-nowrap">Rent per token: $`+profitPerToken+`</p>
                             <p class="text-gray-400 text-sm whitespace-nowrap truncate mb-4">`+propertyAddress+`</p>
                             <div class="rounded bg-green-500 text-white inline-block text-sm px-2 py-1 ">Value: <span class="font-medium">$`+value.toLocaleString('en-US')+`</span></div>
-                            <div class="rounded bg-green-500 text-white inline-block text-sm px-2 py-1 ">Token on sale: <span class="font-medium">`+tokensOnSale.toLocaleString('en-US')+`</span></div>
+                            <div class="rounded `+ colorDisplay +` text-white inline-block text-sm px-2 py-1 ">Token on sale: <span class="font-medium">`+tokensOnSale.toLocaleString('en-US')+`</span></div>
                         </div>
                         <!-- Room information -->
                         <div class="grid grid-cols-3">
@@ -367,6 +368,7 @@ App = {
             const result = await App.exchange.sellTokens(tokenAddress, web3.utils.toWei(sellInput.toString(), "ether"), web3.utils.toWei(sellOutput.toString(), "ether"), {from: App.account});
             
             App.renderBalances(property, token);
+            App.renderPropertyOwners(token);
             $('#buyInput, #buyOutput, #sellInput, #sellOutput').val("");
             // alert("You have successfully sold " + sellInput + " tokens!")
         })
@@ -379,24 +381,24 @@ App = {
             const result = await App.exchange.buyTokens(tokenAddress, web3.utils.toWei(buyOutput.toString(), "ether"), {from: App.account, value: web3.utils.toWei(buyInput.toString(), "ether")})
 
             App.renderBalances(property, token);
+            App.renderPropertyOwners(token);
             $('#buyInput, #buyOutput, #sellInput, #sellOutput').val("");
             // alert("You have successfully bought " + buyAmount + " tokens!")
         })
     },
 
     renderPropertyOwners: async (token) => {
-        // let test = await token.returnOwner(0);
-        let test = await token.ownersCount;
-
         token.ownersCount(async function(err, res) {
             let ownersCount = parseInt(res);
+            $('#displayNumberOfOwners').html(ownersCount)
+            
             for(let i = 0; i < ownersCount; i++) {
                 let acc = await token.returnOwner(i);
                 let balance = await token.balanceOf(acc);
                 $('#displayBalances').append(`
                     <div class="border-t p-4">
                         <p class="text-gray-500 text-xs md:text-sm">`+acc+`</p>
-                        <p class="text-gray-500 text-xs md:text-sm"> Balance: <span class="font-medium">`+parseFloat(web3.utils.fromWei(balance.toString(), "ether")).toLocaleString('en-US')+`</span></p>
+                        <p class="text-gray-500 text-xs md:text-sm"> Balance: <span class="font-medium">`+web3.utils.fromWei(balance.toString(), "ether")+`</span></p>
                     </div>
                 `)
             }
