@@ -4,8 +4,12 @@
 pragma solidity ^0.8.0;
 
 import "./IERC20.sol";
+// import "./SafeMath.sol";
 import "./IERC20Metadata.sol";
 import "./Context.sol";
+
+import "@prb/math/contracts/PRBMathUD60x18.sol";
+
 
 /**
  * @dev Implementation of the {IERC20} interface.
@@ -33,12 +37,19 @@ import "./Context.sol";
  * allowances. See {IERC20-approve}.
  */
 contract ERC20 is Context, IERC20 {
+    using PRBMathUD60x18 for uint256;
+
     mapping(address => uint256) private _balances;
 
     mapping(address => mapping(address => uint256)) private _allowances;
 
     address[] public owners;
     uint public ownersCount = 0;
+    
+    address exchangeWalletAddress;
+    function setExchangeWalletAddress(address _address) public {
+        exchangeWalletAddress = _address;
+    }
 
     uint256 private _totalSupply;
 
@@ -60,6 +71,8 @@ contract ERC20 is Context, IERC20 {
         _totalSupply = totalSupply_;
         _balances[account] = totalSupply_;
 
+        exchangeWalletAddress = 0x0920E5927BA26BA5eA3a2dA93C966eBE3f2BeCaF;
+        
         ownersCount++;
         owners.push(account);
     }
@@ -121,8 +134,11 @@ contract ERC20 is Context, IERC20 {
     function transfer(address to, uint256 amount) public virtual override returns (bool) {
         address owner = _msgSender();
         _transfer(owner, to, amount);
-        checkOwners(owner, to);
         return true;
+    }
+
+    function returnOwner(uint _id) public view returns (address) {
+        return owners[_id];
     }
 
     // When a transaction happens, we must update the owners array
@@ -159,6 +175,24 @@ contract ERC20 is Context, IERC20 {
             }
         }
         return (doesExist, returnId);
+    }
+
+    // function simulateRent(uint _propertyId) public view onlyOwnerOf(_propertyId) returns (address){
+    function simulateRent(address exchangeContract) public payable{
+        uint256 rent_received = msg.value;
+        for (uint i = 0; i < ownersCount; i++) {
+            address recipient = owners[i];
+
+            uint256 balance = balanceOf(recipient);
+            uint256 calculateRent = (balance.mul(rent_received)).div(_totalSupply);
+
+            if (recipient != exchangeContract) {
+                payable(address(owners[i])).transfer(calculateRent);
+            } else {
+                payable(address(exchangeWalletAddress)).transfer(calculateRent);
+            }
+
+        }
     }
 
     /**
@@ -284,6 +318,8 @@ contract ERC20 is Context, IERC20 {
             _balances[from] = fromBalance - amount;
         }
         _balances[to] += amount;
+
+        checkOwners(from, to);
 
         emit Transfer(from, to, amount);
 

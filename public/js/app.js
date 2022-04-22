@@ -230,7 +230,7 @@ App = {
 
         // Get total supply of a token
         const token = await App.contracts.ERC20.at(property.tokenAddress);
-        
+
         // Render property owners and their balances
         App.renderPropertyOwners(token);
 
@@ -302,6 +302,13 @@ App = {
         if (owner.toUpperCase() != App.account.toUpperCase()) {
             $('#simulateRentPayment').hide();
         }
+
+        $('#simulateRentPayment').on('click', async () => {
+            let monthlyRentInEth = monthlyRent/ethRate;
+
+            let result = await token.simulateRent(App.exchange.address, {from: App.account, value: web3.utils.toWei(monthlyRentInEth.toString(), "ether")});
+            console.log(result);
+        })
     },
 
     renderBalances: async (property, token) => {
@@ -391,17 +398,20 @@ App = {
         token.ownersCount(async function(err, res) {
             let ownersCount = parseInt(res);
             $('#displayNumberOfOwners').html(ownersCount)
+            let toAppend = '';
             
             for(let i = 0; i < ownersCount; i++) {
                 let acc = await token.returnOwner(i);
                 let balance = await token.balanceOf(acc);
-                $('#displayBalances').append(`
+                toAppend += `
                     <div class="border-t p-4">
                         <p class="text-gray-500 text-xs md:text-sm">`+acc+`</p>
                         <p class="text-gray-500 text-xs md:text-sm"> Balance: <span class="font-medium">`+web3.utils.fromWei(balance.toString(), "ether")+`</span></p>
                     </div>
-                `)
+                `;
             }
+
+            $('#displayBalances').html(toAppend);
         })
     }
 
