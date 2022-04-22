@@ -23,9 +23,8 @@ contract Exchange is PropertyFactory{
         uint amount
     );
 
-    function increaseExchangeBalance() payable public {
-        // payable(address(this)).transfer(msg.value);
-    }
+    // Pay eth into this contract
+    function increaseExchangeBalance() payable public onlyOwner(){}
 
     function sellTokens(address tokenAddress, uint _tokenAmount, uint _etherAmount) public{
         ERC20 token = ERC20(tokenAddress);
