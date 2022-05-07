@@ -15,7 +15,7 @@
     <meta name="author" content="Tauras Pajuodis">
 
     <!-- TITLE -->
-    <title>MyToken</title>
+    <title>eToken</title>
     <!-- FAV ICON -->
     <link rel="shortcut icon" href="./images/favicon.ico">
     <!-- CSS -->
@@ -34,7 +34,7 @@
                 
                 <!-- Logo and nav -->
                 <div class="flex items-center justify-between ml-20 mt-4 md:ml-28 md:mt-10">
-                    <a class="text-gray-50 font-bold text-3xl" href="./index.php" title="Home">MyToken<span class="text-orange-600">.</span></a>
+                    <a class="text-gray-50 font-bold text-3xl" href="./index.php" title="Home">eToken<span class="text-orange-600">.</span></a>
                     <nav class="hidden md:block space-x-8">
                         <a href="./marketplace.php" class="text-gray-300 transition hover:text-orange-600" title="Go to marketplace">Marketplace</a>
                         <a href="./faq.php" class="text-gray-300 transition hover:text-orange-600" title="Go to FAQ page">FAQ</a>
@@ -71,8 +71,8 @@
                             <!-- Invisible element -->
                             <div class="flex-1"></div>
                             <!-- Logo -->
-                            <a href="./index.php" class="flex-1 flex flex-col text-center my-6" title="MyToken">
-                                <p class="text-gray-900 font-bold text-3xl">MyToken<span class="text-orange-600">.</span></p>
+                            <a href="./index.php" class="flex-1 flex flex-col text-center my-6" title="eToken">
+                                <p class="text-gray-900 font-bold text-3xl">eToken<span class="text-orange-600">.</span></p>
                             </a>
                             <!-- Close button -->
                             <div class="flex-1 flex justify-end mr-6">
@@ -90,7 +90,7 @@
 
                         <!-- Faint logo -->
                         <div class="flex justify-center items-center">
-                            <p class="text-gray-900 [font-size:100px] -mt-6 font-black -rotate-3 opacity-5">MyToken</p>
+                            <p class="text-gray-900 [font-size:100px] -mt-6 font-black -rotate-3 opacity-5">eToken</p>
                         </div>
                     </div>
 
@@ -256,31 +256,32 @@
             <!-- Grid of benefits -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
                 <div class="flex">
-                    <svg class="w-12 h-12 text-orange-600 flex-none mr-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    <svg class="w-12 h-12 text-orange-600 flex-none mr-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                     <div>
                         <p class="text-gray-50 font-medium">Unique Tokens</p>
-                        <p class="text-gray-400 mt-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam quisquam nostrum quos ad error, earum soluta eaque veritatis facilis voluptatum optio tempora accusantium debitis aspernatur.</p>
+                        <p class="text-gray-400 mt-4">Each tokenised property will be associated with a unique ERC-20 contract, which means that no two properties can have the same tokens - they are all unique!</p>
                     </div>
                 </div>
                 <div class="flex">
                     <svg class="w-12 h-12 text-orange-600 flex-none mr-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+
                     <div>
-                        <p class="text-gray-50 font-medium">Unique Tokens</p>
-                        <p class="text-gray-400 mt-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam quisquam nostrum quos ad error, earum soluta eaque veritatis facilis voluptatum optio tempora accusantium debitis aspernatur.</p>
+                        <p class="text-gray-50 font-medium">Diversify your portfolio</p>
+                        <p class="text-gray-400 mt-4">Investing in real estate has never been easier. You no longer need to have a large amount of money saved up. You can now buy tokens that represent fractional ownership, and also cost a fraction of the property value!</p>
                     </div>
                 </div>
                 <div class="flex">
-                    <svg class="w-12 h-12 text-orange-600 flex-none mr-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    <svg class="w-12 h-12 text-orange-600 flex-none mr-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
                     <div>
-                        <p class="text-gray-50 font-medium">Unique Tokens</p>
-                        <p class="text-gray-400 mt-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam quisquam nostrum quos ad error, earum soluta eaque veritatis facilis voluptatum optio tempora accusantium debitis aspernatur.</p>
+                        <p class="text-gray-50 font-medium">Blockchain functionality</p>
+                        <p class="text-gray-400 mt-4">All transactions performed on this platform are stored on the blockchain, meaning they are public and accessible by everyone. The goal is to create a transparent and decentralised trading platform.</p>
                     </div>
                 </div>
                 <div class="flex">
-                    <svg class="w-12 h-12 text-orange-600 flex-none mr-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                    <svg class="w-12 h-12 text-orange-600 flex-none mr-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                     <div>
-                        <p class="text-gray-50 font-medium">Unique Tokens</p>
-                        <p class="text-gray-400 mt-4">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam quisquam nostrum quos ad error, earum soluta eaque veritatis facilis voluptatum optio tempora accusantium debitis aspernatur.</p>
+                        <p class="text-gray-50 font-medium">Smart contracts</p>
+                        <p class="text-gray-400 mt-4">All ownerships are established through smart contracts, meaning ownerships are immutable and unchangeable. Your tokens will only belong to you!</p>
                     </div>
                 </div>
             </div>
@@ -312,7 +313,7 @@
         </div>
 
         <div class="text-center pt-8">
-            <h1 class="font-bold text-gray-900 text-lg">MyToken<span class="text-orange-600">.</span></h1>
+            <h1 class="font-bold text-gray-900 text-lg">eToken<span class="text-orange-600">.</span></h1>
         </div>
 
         <div class="flex justify-center items-center space-x-1">

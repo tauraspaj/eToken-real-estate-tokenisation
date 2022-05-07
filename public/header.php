@@ -15,7 +15,7 @@
     <meta name="author" content="Tauras Pajuodis">
 
     <!-- TITLE -->
-    <title>MyToken <?php echo '- '.strtoupper($activePage) ?></title>
+    <title>eToken <?php echo '- '.strtoupper($activePage) ?></title>
     <!-- FAV ICON -->
     <!-- <link rel="shortcut icon" href="./images/favicon.ico"> -->
     <!-- CSS -->
@@ -28,7 +28,7 @@
     <header class="border-b h-16">
         <div class="container mx-auto p-4 flex justify-between items-center">
             <!-- Logo -->
-            <a href="./index.php" title="Home" class="font-bold text-gray-900 text-2xl">MyToken<span class="text-orange-600">.</span></a>
+            <a href="./index.php" title="Home" class="font-bold text-gray-900 text-2xl">eToken<span class="text-orange-600">.</span></a>
 
             <nav class="hidden md:block flex items-center space-x-12">
                 <a href="./marketplace.php" class="<?php echo ($activePage == 'marketplace') ? 'text-orange-600' : 'text-gray-900' ?> transition hover:text-orange-600" title="Go to marketplace">Marketplace</a>
@@ -49,8 +49,8 @@
                             <!-- Invisible element -->
                             <div class="flex-1"></div>
                             <!-- Logo -->
-                            <a href="./index.php" class="flex-1 flex flex-col text-center my-6" title="MyToken">
-                                <p class="text-gray-900 font-bold text-3xl">MyToken<span class="text-orange-600">.</span></p>
+                            <a href="./index.php" class="flex-1 flex flex-col text-center my-6" title="eToken">
+                                <p class="text-gray-900 font-bold text-3xl">eToken<span class="text-orange-600">.</span></p>
                             </a>
                             <!-- Close button -->
                             <div class="flex-1 flex justify-end mr-6">
@@ -69,7 +69,7 @@
 
                         <!-- Faint logo -->
                         <div class="flex justify-center items-center pointer-events-none">
-                            <p class="text-gray-900 [font-size:100px] -mt-6 font-black -rotate-3 opacity-5">MyToken</p>
+                            <p class="text-gray-900 [font-size:100px] -mt-6 font-black -rotate-3 opacity-5">eToken</p>
                         </div>
                     </div>
 

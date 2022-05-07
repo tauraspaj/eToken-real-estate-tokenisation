@@ -15,7 +15,7 @@
         </div>
 
         <div class="text-center pt-8">
-            <h1 class="font-bold text-gray-900 text-lg">MyToken<span class="text-orange-600">.</span></h1>
+            <h1 class="font-bold text-gray-900 text-lg">eToken<span class="text-orange-600">.</span></h1>
         </div>
 
         <div class="flex justify-center items-center space-x-1">
