@@ -177,8 +177,7 @@ contract ERC20 is Context, IERC20 {
         return (doesExist, returnId);
     }
 
-    // function simulateRent(uint _propertyId) public view onlyOwnerOf(_propertyId) returns (address){
-    function simulateRent(address exchangeContract) public payable{
+    function simulateRent(address exchangeContract) public payable {
         uint256 rent_received = msg.value;
         for (uint i = 0; i < ownersCount; i++) {
             address recipient = owners[i];
