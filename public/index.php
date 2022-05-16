@@ -118,7 +118,7 @@
             </div>
         </div>
 
-        <!-- Cards -->
+        <!-- Display latest properties -->
         <div id="index-latestProperties" class="grid grid-cols-1 lg:grid-cols-3 gap-12">
             
         </div>
