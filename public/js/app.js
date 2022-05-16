@@ -108,8 +108,8 @@ App = {
    
             const owner = await App.propertyFactory.propertyToOwner(i);
 
-            $('#marketplace').prepend(`
-                <a href="./property.php?id=`+i+`" class="bg-white rounded-3xl group h-96 border shadow flex flex-col overflow-hidden cursor-pointer" href="" title="">
+            propertyHTML = `
+            <a href="./property.php?id=`+i+`" class="bg-white rounded-3xl group h-96 border shadow flex flex-col overflow-hidden cursor-pointer" href="" title="">
                     <!-- Image -->
                     <div class="w-full h-3/5 overflow-hidden rounded-t-3xl">
                         <div class="w-full h-full bg-cover bg-center border-b transition group-hover:scale-110" style="background-image: url('`+images[0]+`')">
@@ -149,7 +149,12 @@ App = {
                         </div>
                     </div>
                 </a>
-            `)
+            `
+
+            $('#marketplace').prepend(propertyHTML)
+            if (i < 3) {
+                $('#index-latestProperties').prepend(propertyHTML)
+            }
         }
     },
 
@@ -425,7 +430,7 @@ $(() => {
         const url = window.location.href.split("/").pop();
 
         // Render marketplace
-        if (url.includes("marketplace.php")) {
+        if (url.includes("marketplace.php") || url.includes("index.php")) {
             App.renderMarketplace();
         }
 
