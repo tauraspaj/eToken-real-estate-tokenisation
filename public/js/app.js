@@ -430,7 +430,7 @@ $(() => {
         const url = window.location.href.split("/").pop();
 
         // Render marketplace
-        if (url.includes("marketplace.php") || url.includes("index.php")) {
+        if (url.includes("marketplace.php") || url.includes("index.php") ) {
             App.renderMarketplace();
         }
 
