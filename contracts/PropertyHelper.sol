@@ -9,7 +9,7 @@ contract PropertyHelper is PropertyFactory {
         _;
     }
 
-    function changePropertyName(uint _propertyId, string calldata _newName) external onlyOwnerOf(_propertyId) {
-        properties[_propertyId].name = _newName;
-    }
+    // function changePropertyName(uint _propertyId, string calldata _newName) external onlyOwnerOf(_propertyId) {
+    //     properties[_propertyId].name = _newName;
+    // }
 }
